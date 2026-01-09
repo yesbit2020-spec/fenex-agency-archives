@@ -22,20 +22,26 @@
         .phrase-unit { display: inline-block; white-space: nowrap; }
         .logo-box { width: 55px; height: 55px; background-color: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         
-        /* --- Formrun カスタムCSS --- */
-        /* 埋め込まれたフォーム内の不要な要素を消す */
+        /* --- Formrun 強制非表示カスタム --- */
+        /* ヘッダー・フッター・広告・リンクをすべて消去 */
         .formrun-embed-header, 
         .formrun-embed-footer,
+        ._formrun_ad,
         [class*="formrun-ad"],
-        div[style*="text-align: center"] > a[href*="form.run"] {
+        div[style*="text-align: center"] > a,
+        .form-wrapper a[href*="form.run"] {
             display: none !important;
+            height: 0 !important;
+            visibility: hidden !important;
         }
         
+        /* フォームの枠を整える */
         .form-wrapper {
             background: #fff;
             border-radius: 2.5rem;
             padding: 2rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            min-height: 600px;
         }
 
         .legal-box { font-size: 0.95rem; color: #475569; padding: 2rem; background-color: #f8fafc; border-radius: 1.5rem; margin-top: 0.8rem; text-align: left; }
