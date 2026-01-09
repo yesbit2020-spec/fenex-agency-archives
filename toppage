@@ -5,173 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fenex Agency | Official</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --navy: #0F172A; --blue: #2563EB; }
+        :root { --navy: #0F172A; --blue: #2563EB; --pink: #FDF2F8; }
         body { 
             font-family: 'Noto Sans JP', sans-serif; 
             color: var(--navy); 
             background-color: #FBFAFC; 
             scroll-behavior: smooth; 
-            line-height: 1.8;
-            letter-spacing: 0.02em;
             -webkit-font-smoothing: antialiased;
         }
-        .hero-title { font-weight: 900; letter-spacing: -0.01em; font-size: clamp(2rem, 8vw, 4.5rem); line-height: 1.3; }
+        .hero-title { font-weight: 900; letter-spacing: -0.02em; font-size: clamp(2.25rem, 8vw, 4.5rem); line-height: 1.2; }
         .phrase-unit { display: inline-block; white-space: nowrap; }
-        
-        /* ロゴ周りの設定 */
-        .logo-container { display: flex; align-items: center; gap: 0.75rem; }
 
-        /* --- 【最重要】form.run埋め込みエリアのカスタマイズ --- */
-        .form-embed-outer {
+        /* 入力フォームのこだわりっ！ */
+        .input-field {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            border-radius: 1.25rem;
+            border: 2px solid #E2E8F0;
             background: #FFFFFF;
-            border-radius: 3rem;
-            padding: 2.5rem;
-            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.1);
-            border: 1px solid rgba(15, 23, 42, 0.05);
-            max-width: 800px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            font-size: 1rem;
+        }
+        .input-field:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-card {
+            background: #FFFFFF;
+            border-radius: 3.5rem;
+            padding: 4rem 3rem;
+            box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.12);
+            max-width: 850px;
             margin: 0 auto;
-            overflow: hidden; /* 子要素の広告がはみ出さないように */
+            border: 1px solid rgba(15, 23, 42, 0.03);
         }
 
-        /* 埋め込まれたフォーム内部の広告・ロゴをCSSで消去 */
-        /* ※ SDK方式で生成されるクラス名を狙い撃ち */
-        .formrun-embed-header, 
-        .formrun-embed-footer, 
-        ._formrun_ad, 
-        [class*="formrun-ad"],
-        div[style*="text-align: center"] > a {
-            display: none !important;
-            height: 0 !important;
-            visibility: hidden !important;
-        }
-
-        .legal-box { font-size: 1rem; color: #334155; padding: 2rem; background-color: #f1f5f9; border-radius: 1.5rem; }
-        details summary { cursor: pointer; list-style: none; font-weight: 700; padding: 1.2rem 0; border-bottom: 2px solid #e2e8f0; }
-        
         .float-btn { position: fixed; bottom: 30px; right: 30px; z-index: 100; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.5s ease; }
         .float-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.25rem; }
-            .form-embed-outer { padding: 1.5rem 1rem; border-radius: 2rem; }
+            .form-card { padding: 3rem 1.5rem; border-radius: 2.5rem; }
+            .float-btn { bottom: 20px; right: 20px; left: 20px; }
+            .float-btn a { width: 100%; text-align: center; }
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <div id="main-content">
-        <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b px-6 py-4">
-            <div class="container mx-auto flex justify-between items-center">
-                <a href="#top" class="logo-container">
-                    <svg width="45" height="45" viewBox="0 0 100 100" fill="none">
-                        <circle cx="50" cy="50" r="48" stroke="#0F172A" stroke-width="2"/>
-                        <path d="M50 25C55 35 75 40 85 65C70 60 55 65 50 80C45 65 30 60 15 65C25 40 45 35 50 25Z" fill="#0F172A"/>
-                        <path d="M50 35C52 42 58 45 62 55C55 52 48 55 45 62C42 55 35 52 28 55C32 45 38 42 40 35C42 38 48 38 50 35Z" fill="#2563EB"/>
-                    </svg>
-                    <div class="flex flex-col text-left">
-                        <span class="text-2xl font-black uppercase leading-none text-[#0F172A] tracking-tighter">Fenex</span>
-                        <span class="text-[10px] tracking-[0.4em] font-bold text-blue-600 uppercase leading-none mt-1">Agency</span>
-                    </div>
-                </a>
-                <a href="#apply-form" class="bg-[#0F172A] text-white px-8 py-3 rounded-full text-xs font-bold tracking-widest hover:bg-blue-700">ENTRY</a>
-            </div>
-        </nav>
-
-        <section id="top" class="min-h-screen flex items-center justify-center pt-20 px-6 text-center text-[#0F172A]">
-            <div class="max-w-5xl">
-                <p class="text-blue-600 font-bold tracking-[0.4em] uppercase text-[12px] mb-8">Human & AI Creativity</p>
-                <h1 class="hero-title mb-12">
-                    <span class="phrase-unit">もっと、自分を好きになる。</span><br>
-                    <span class="text-blue-700 phrase-unit">最新技術で、あなたの</span><br>
-                    <span class="text-blue-700 phrase-unit">「なりたい」を一緒にかなえる。</span>
-                </h1>
-                <div class="w-16 h-1 bg-blue-600 mx-auto mb-12"></div>
-                <a href="#apply-form" class="inline-block bg-[#0F172A] text-white px-12 py-5 rounded-full text-lg font-bold tracking-widest shadow-2xl hover:scale-105 transition-all">AI無料診断にエントリーする</a>
-            </div>
-        </section>
-
-        <section class="py-32 bg-white px-6">
-            <div class="container mx-auto max-w-6xl">
-                <div class="text-center mb-24">
-                    <h2 class="text-4xl md:text-5xl font-black text-[#0F172A] mb-6 uppercase tracking-widest">Our Strength</h2>
-                    <p class="text-sm font-bold tracking-[0.3em] text-slate-400 uppercase">Fenexが選ばれる3つの理由</p>
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-lg border-b px-6 py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3 group">
+                <svg width="42" height="42" viewBox="0 0 100 100" fill="none" class="group-hover:rotate-12 transition-transform">
+                    <circle cx="50" cy="50" r="48" stroke="#0F172A" stroke-width="3"/>
+                    <path d="M50 20C55 35 80 40 90 70C75 65 55 70 50 90C45 70 25 65 10 70C20 40 45 35 50 20Z" fill="#0F172A"/>
+                    <path d="M50 35L55 50L75 55L55 60L50 75L45 60L25 55L45 50L50 35Z" fill="#2563EB"/>
+                </svg>
+                <div class="flex flex-col text-left">
+                    <span class="text-2xl font-black uppercase leading-none tracking-tighter">Fenex</span>
+                    <span class="text-[10px] tracking-[0.4em] font-bold text-blue-600 uppercase leading-none mt-1">Agency</span>
                 </div>
-                <div class="grid md:grid-cols-3 gap-12">
-                    <div class="p-10 rounded-[3rem] bg-slate-50 border border-slate-100">
-                        <span class="text-blue-600 font-black text-3xl mb-8 block">01</span>
-                        <h3 class="text-2xl font-bold mb-6">大手事務所の<br>案件にもリーチ</h3>
-                        <p class="text-slate-600 font-medium">AIが客観的に分析。一番輝ける場所への架け橋になります。</p>
-                    </div>
-                    <div class="p-10 rounded-[3rem] bg-slate-50 border border-slate-100">
-                        <span class="text-blue-600 font-black text-3xl mb-8 block">02</span>
-                        <h3 class="text-2xl font-bold mb-6">映像作品や<br>ランウェイへの近道</h3>
-                        <p class="text-slate-600 font-medium">強力なコネクションで、最短距離でプロの現場へ。</p>
-                    </div>
-                    <div class="p-10 rounded-[3rem] bg-slate-50 border border-slate-100">
-                        <span class="text-blue-600 font-black text-3xl mb-8 block">03</span>
-                        <h3 class="text-2xl font-bold mb-6">AI技術で<br>魔法の一枚を</h3>
-                        <p class="text-slate-600 font-medium">プロの感性と最新AIで、あなたのポテンシャルを最大化。</p>
-                    </div>
-                </div>
+            </a>
+            <a href="#apply-form" class="bg-[#0F172A] text-white px-8 py-3 rounded-full text-xs font-bold tracking-widest hover:bg-blue-700 hover:scale-105 transition-all">ENTRY</a>
+        </div>
+    </nav>
+
+    <section id="top" class="min-h-screen flex items-center justify-center pt-20 px-6 text-center bg-gradient-to-b from-white to-slate-50">
+        <div class="max-w-5xl">
+            <p class="text-blue-600 font-bold tracking-[0.6em] uppercase text-[12px] mb-8 animate-pulse">Human & AI Creativity</p>
+            <h1 class="hero-title text-[#0F172A] mb-12">
+                <span class="phrase-unit">もっと、自分を好きになる。</span><br>
+                <span class="text-blue-700 phrase-unit">最新技術で、あなたの</span><br>
+                <span class="text-blue-700 phrase-unit">「なりたい」を一緒にかなえる。</span>
+            </h1>
+            <div class="w-24 h-1.5 bg-blue-600 mx-auto mb-12 rounded-full"></div>
+            <a href="#apply-form" class="inline-block bg-[#0F172A] text-white px-14 py-7 rounded-full text-xl font-black tracking-widest shadow-2xl hover:scale-105 hover:bg-blue-700 transition-all">AI無料診断をはじめる ✨</a>
+        </div>
+    </section>
+
+    <section id="apply-form" class="py-32 bg-slate-50 px-6">
+        <div class="container mx-auto max-w-4xl text-center">
+            <div class="mb-20">
+                <h2 class="text-4xl md:text-5xl font-black mb-4 uppercase tracking-tighter text-[#0F172A]">Audition Form</h2>
+                <p class="text-blue-600 text-sm font-bold uppercase tracking-[0.4em] mb-12">Entry for AI Diagnosis</p>
+                <p class="text-[#0F172A] font-black text-2xl md:text-4xl mb-6 leading-tight">「AIは、あなたの可能性を否定しない。」</p>
+                <p class="text-slate-500 font-bold text-lg">ヘテムルのフォームで、安全にエントリー受付中だよっ！💌</p>
             </div>
-        </section>
 
-        <section id="apply-form" class="py-32 bg-slate-100 px-6">
-            <div class="container mx-auto max-w-5xl text-center">
-                <div class="mb-16">
-                    <h2 class="text-4xl font-black mb-4 uppercase tracking-tighter text-[#0F172A]">Audition Form</h2>
-                    <p class="text-blue-600 text-xs font-bold uppercase tracking-[0.4em]">Start AI Diagnosis</p>
-                    <p class="mt-8 text-[#0F172A] font-black text-2xl md:text-3xl">「AIは、あなたの可能性を否定しない。」</p>
-                </div>
-
-                <div class="form-embed-outer">
-                    <div class="formrun-embed" 
-                         data-formrun-form="@yesbit--GZVHS7NtUeyQDLE1n9Vr" 
-                         data-formrun-redirect="true">
-                    </div>
-                    <script src="https://sdk.form.run/js/v2/embed.js"></script>
-                </div>
-
-                <p class="mt-12 text-slate-400 text-sm font-bold tracking-widest uppercase">
-                    © FENEX AGENCY AI RECRUITING SYSTEM
-                </p>
-            </div>
-        </section>
-
-        <footer class="py-32 bg-white px-6 border-t border-slate-100">
-            <div class="container mx-auto max-w-5xl">
-                <div class="grid md:grid-cols-2 gap-20 items-start mb-20">
+            <div class="form-card text-left">
+                <form action="ここにヘテムルのURLを貼る" method="post" enctype="multipart/form-data" class="space-y-10">
                     <div>
-                        <p class="text-3xl font-black text-[#0F172A] mb-6">Human & AI Creativity</p>
-                        <p class="text-slate-400 text-sm font-bold uppercase tracking-[0.3em]">Empowering the next generation</p>
+                        <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">01. Name</label>
+                        <input type="text" name="name" class="input-field" placeholder="お名前を入力してね" required>
                     </div>
-                    <div class="space-y-8">
-                        <details class="group">
-                            <summary class="flex justify-between items-center text-lg uppercase tracking-widest text-[#0F172A]">About Us</summary>
-                            <div class="legal-box space-y-6 mt-4">
-                                <dl class="space-y-4">
-                                    <div class="border-b border-slate-200 pb-2"><dt class="text-slate-400 text-xs uppercase mb-1">Representative</dt><dd class="text-xl font-bold">伊東 健太郎</dd></div>
-                                    <div class="border-b border-slate-200 pb-2"><dt class="text-slate-400 text-xs uppercase mb-1">Location</dt><dd class="text-lg font-bold">神奈川県相模原市</dd></div>
-                                </dl>
-                            </div>
-                        </details>
-                        <details class="group">
-                            <summary class="flex justify-between items-center text-lg uppercase tracking-widest text-[#0F172A]">Fan Guideline</summary>
-                            <div class="legal-box mt-4 text-sm font-medium">
-                                <p>1. リスペクトの保持<br>2. 権利の保護</p>
-                            </div>
-                        </details>
+                    
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">02. Age</label>
+                            <input type="number" name="age" class="input-field" placeholder="年齢" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">03. Area</label>
+                            <input type="text" name="pref" class="input-field" placeholder="お住まいの都道府県" required>
+                        </div>
                     </div>
-                </div>
-                <div class="text-center text-xs font-bold text-slate-300 pt-12 border-t border-slate-100 uppercase tracking-widest">© 2026 Fenex Agency.</div>
+
+                    <div>
+                        <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">04. Email</label>
+                        <input type="email" name="email" class="input-field" placeholder="連絡のつくアドレスを教えてね" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">05. Photo</label>
+                        <div class="relative group">
+                            <input type="file" name="photo" class="block w-full text-sm text-slate-500 file:mr-6 file:py-4 file:px-10 file:rounded-full file:border-0 file:text-sm file:font-black file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer" required>
+                        </div>
+                        <p class="mt-4 text-xs text-slate-400 font-bold leading-relaxed">※AIがあなたのポテンシャルを分析するために、はっきり写った写真をアップしてねっ！📷✨</p>
+                    </div>
+
+                    <div class="pt-10">
+                        <button type="submit" class="w-full bg-blue-600 text-white py-7 rounded-full text-2xl font-black shadow-2xl hover:bg-blue-700 hover:scale-[1.02] active:scale-95 transition-all">
+                            AI診断結果を受け取る 🚀
+                        </button>
+                    </div>
+                </form>
             </div>
-        </footer>
-    </div>
+            
+            <p class="mt-16 text-slate-300 text-[10px] font-black tracking-[0.5em] uppercase">
+                © FENEX AGENCY AI RECRUITING SYSTEM
+            </p>
+        </div>
+    </section>
+
+    <footer class="py-20 bg-white px-6 border-t border-slate-100 text-center">
+        <div class="container mx-auto">
+            <div class="text-[10px] font-black text-slate-300 uppercase tracking-widest">© 2026 Fenex Agency.</div>
+        </div>
+    </footer>
 
     <div id="floatBtn" class="float-btn">
-        <a href="#apply-form" class="bg-blue-600 text-white px-10 py-5 rounded-full text-sm font-bold shadow-2xl inline-block hover:bg-blue-700">AI無料診断にエントリー</a>
+        <a href="#apply-form" class="bg-blue-600 text-white px-10 py-5 rounded-full text-sm font-black shadow-2xl inline-block hover:bg-blue-700 hover:scale-105 transition-all">AI無料診断にエントリー 💖</a>
     </div>
 
     <script>
@@ -179,13 +156,6 @@
             const btn = document.getElementById('floatBtn');
             if (window.scrollY > 500) btn.classList.add('show'); else btn.classList.remove('show');
         });
-
-        // フォーム内の広告を消すための監視スクリプト
-        const observer = new MutationObserver(() => {
-            const adLinks = document.querySelectorAll('.form-embed-outer a[href*="form.run"]');
-            adLinks.forEach(link => link.style.display = 'none');
-        });
-        observer.observe(document.querySelector('.form-embed-outer'), { childList: true, subtree: true });
     </script>
 </body>
 </html>
