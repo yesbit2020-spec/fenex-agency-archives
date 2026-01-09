@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fenex Agency | Official</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --navy: #0F172A; --blue: #2563EB; }
+        body { 
+            font-family: 'Noto Sans JP', sans-serif; 
+            color: var(--navy); 
+            background-color: #FFFFFF; 
+            scroll-behavior: smooth; 
+            line-height: 1.8;
+            letter-spacing: 0.02em;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility; 
+        }
+        .hero-title { font-weight: 900; letter-spacing: -0.01em; font-size: clamp(1.75rem, 8vw, 4rem); line-height: 1.5; }
+        .phrase-unit { display: inline-block; white-space: nowrap; }
+        .logo-box { width: 55px; height: 55px; background-color: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .input-field { width: 100%; background-color: #f8fafc; border: 2px solid #f1f5f9; border-radius: 1.2rem; padding: 1rem; outline: none; transition: all 0.3s; font-weight: 500; }
+        
+        /* セクション表示制御 */
+        #thanks-screen { display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; background: #FFFFFF; }
+        
+        .legal-box { font-size: 0.95rem; color: #475569; padding: 2rem; background-color: #f8fafc; border-radius: 1.5rem; margin-top: 0.8rem; text-align: left; }
+        details summary { cursor: pointer; list-style: none; outline: none; font-weight: 700; letter-spacing: 0.05em; padding: 1rem 0; border-bottom: 1px solid #f1f5f9; }
+        .plus-icon { color: var(--blue); font-size: 1.4rem; transition: transform 0.3s; font-weight: bold; }
+        details[open] .plus-icon { transform: rotate(45deg); }
+        .float-btn { position: fixed; bottom: 30px; right: 30px; z-index: 100; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.5s ease; }
+        .float-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        @media (max-width: 768px) { .float-btn { bottom: 20px; right: 20px; left: 20px; } .float-btn a { width: 100%; text-align: center; } }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="main-content">
+        <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b px-6 py-4">
+            <div class="container mx-auto flex justify-between items-center">
+                <a href="#top" class="flex items-center space-x-3 text-left">
+                    <div class="logo-box"><span class="text-[8px] text-slate-400 font-bold">LOGO</span></div>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-black uppercase leading-none text-[#0F172A]">Fenex</span>
+                        <span class="text-[10px] tracking-[0.3em] font-bold text-blue-600 uppercase leading-none mt-1">Agency</span>
+                    </div>
+                </a>
+                <a href="#apply-form" class="bg-[#0F172A] text-white px-8 py-3 rounded-full text-xs font-bold tracking-widest hover:bg-blue-700">ENTRY</a>
+            </div>
+        </nav>
+
+        <section id="top" class="min-h-screen flex items-center justify-center bg-white pt-20 px-6 text-center">
+            <div class="max-w-5xl">
+                <p class="text-blue-600 font-bold tracking-[0.4em] uppercase text-[11px] mb-8">Human & AI Creativity</p>
+                <h1 class="hero-title text-[#0F172A] mb-10 text-center">
+                    <span class="phrase-unit">もっと、自分を好きになる。</span><br>
+                    <span class="text-blue-700 phrase-unit">最新技術で、あなたの</span><br>
+                    <span class="text-blue-700 phrase-unit">「なりたい」を一緒にかなえる。</span>
+                </h1>
+                <div class="w-12 h-1 bg-slate-200 mx-auto mb-10"></div>
+                <a href="#apply-form" class="inline-block bg-[#0F172A] text-white px-12 py-5 rounded-full text-lg font-bold tracking-widest shadow-xl hover:scale-105 transition-all">AI無料診断にエントリーする</a>
+            </div>
+        </section>
+
+        <section class="py-24 bg-white px-6">
+            <div class="container mx-auto max-w-6xl text-center">
+                <div class="text-center mb-20">
+                    <h2 class="text-3xl md:text-4xl font-black text-[#0F172A] mb-4 uppercase tracking-widest">Our Strength</h2>
+                    <p class="text-xs font-bold tracking-[0.2em] text-slate-300 uppercase">Fenexが選ばれる3つの理由</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <div class="p-10 rounded-[2.5rem] bg-slate-50 border border-slate-100 shadow-sm text-left">
+                        <span class="text-blue-600 font-black text-2xl mb-6 block">01</span>
+                        <h3 class="text-xl font-bold mb-4">憧れの大手事務所の<br>案件にもリーチ</h3>
+                        <p class="text-[15px] font-medium text-slate-500">AIがあなたの魅力を分析し、数ある大手プロダクションの案件の中から一番輝ける場所への架け橋になります。</p>
+                    </div>
+                    <div class="p-10 rounded-[2.5rem] bg-slate-50 border border-slate-100 shadow-sm text-left">
+                        <span class="text-blue-600 font-black text-2xl mb-6 block text-left">02</span>
+                        <h3 class="text-xl font-bold mb-4">映像作品やランウェイへの<br>近道</h3>
+                        <p class="text-[15px] font-medium text-slate-500">映画やVシネマ監督との強力なコネクションで最短距離での出演をかなえます。大型フェス出演も。</p>
+                    </div>
+                    <div class="p-10 rounded-[2.5rem] bg-slate-50 border border-slate-100 shadow-sm text-left">
+                        <span class="text-blue-600 font-black text-2xl mb-6 block text-left">03</span>
+                        <h3 class="text-xl font-bold mb-4">最先端技術で<br>魔法のような一枚を</h3>
+                        <p class="text-[15px] font-medium text-slate-500 text-left">プロのカメラマンと最新AIを掛け合わせて、あなたの魅力を最大限に引き出した宣材写真を制作します。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="apply-form" class="py-24 bg-slate-50 px-6">
+            <div class="container mx-auto max-w-2xl bg-white p-8 md:p-12 rounded-[3.5rem] shadow-2xl text-left">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-black mb-2 uppercase tracking-tighter text-[#0F172A]">Audition Form</h2>
+                    <p class="text-blue-600 text-[10px] font-bold uppercase tracking-[0.3em] mb-8">Start AI Diagnosis</p>
+                    <div class="bg-blue-50/50 p-8 rounded-3xl inline-block w-full">
+                        <p class="text-[#0F172A] font-bold text-xl mb-3 text-center">「AIは、あなたの可能性を否定しない。」</p>
+                        <p class="text-slate-500 text-sm font-medium text-center">基本情報を入力してください。次のステップで写真提出を行い、AI診断を完了させます。</p>
+                    </div>
+                </div>
+                <form onsubmit="handleFormSubmit(event)" class="space-y-8">
+                    <div><label class="font-bold text-sm mb-2 block">お名前<span>必須</span></label><input type="text" id="form-name" class="input-field" placeholder="山田 花子" required></div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div><label class="font-bold text-sm mb-2 block text-left">年齢<span>必須</span></label><input type="number" id="form-age" class="input-field" placeholder="18" required></div>
+                        <div><label class="font-bold text-sm mb-2 block text-left">都道府県<span>必須</span></label><input type="text" id="form-pref" class="input-field" placeholder="東京都" required></div>
+                    </div>
+                    <div><label class="font-bold text-sm mb-2 block">メールアドレス<span>必須</span></label><input type="email" id="form-email" class="input-field" placeholder="mail@example.com" required></div>
+                    <button type="submit" class="w-full bg-blue-600 text-white py-6 rounded-full font-bold text-lg shadow-lg hover:bg-blue-700">次へ：写真をアップロードする</button>
+                </form>
+            </div>
+        </section>
+
+        <footer class="py-24 bg-white px-6 border-t border-slate-100">
+            <div class="container mx-auto max-w-4xl text-left">
+                <div class="grid md:grid-cols-2 gap-16 items-start mb-16 text-left">
+                    <div>
+                        <p class="text-2xl font-black text-[#0F172A] mb-4 tracking-tight">Human & AI Creativity</p>
+                        <p class="text-slate-400 text-xs font-bold leading-relaxed uppercase tracking-[0.2em]">Empowering the next generation</p>
+                    </div>
+                    <div class="space-y-6">
+                        <details class="group">
+                            <summary class="flex justify-between items-center border-b pb-3 text-base uppercase tracking-widest text-[#0F172A]">About Us <span class="plus-icon">+</span></summary>
+                            <div class="legal-box space-y-4">
+                                <dl class="space-y-4 text-xs">
+                                    <div class="flex flex-col border-b border-slate-100 pb-2"><dt class="text-slate-400 mb-1">Representative</dt><dd class="text-base font-bold">伊東 健太郎</dd></div>
+                                    <div class="flex flex-col border-b border-slate-100 pb-2"><dt class="text-slate-400 mb-1 text-left">Business</dt><dd class="text-base font-bold text-left">AI技術を活用した次世代タレントの発掘・育成・マネジメント</dd></div>
+                                    <div class="flex flex-col border-b border-slate-100 pb-2"><dt class="text-slate-400 mb-1 text-left">Location</dt><dd class="text-base font-bold">神奈川県相模原市</dd></div>
+                                </dl>
+                                <p class="text-[14px] leading-relaxed text-slate-600 italic font-medium">「才能を、テクノロジーで解放する。」</p>
+                            </div>
+                        </details>
+                        <details class="group">
+                            <summary class="flex justify-between items-center border-b pb-3 text-base uppercase tracking-widest text-[#0F172A]">Fan Guideline <span class="plus-icon">+</span></summary>
+                            <div class="legal-box space-y-4 text-sm font-medium">
+                                <p><b>1. アーティストへのリスペクト</b><br>SNS等での誹謗中傷、なりすましは厳正に対処します。</p>
+                                <p><b>2. 権利とコンテンツの保護</b><br>チケット転売や肖像権侵害は禁止です。</p>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+                <div class="text-center text-[10px] font-bold text-slate-300 pt-8 uppercase">© 2026 Fenex Agency.</div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="thanks-screen" class="px-6 text-center">
+        <div class="max-w-xl w-full">
+            <h2 class="text-3xl font-black text-[#0F172A] mb-8 text-center">基本情報の入力完了</h2>
+            <p class="text-blue-600 font-bold mb-10 leading-relaxed text-center text-center">最後に「お写真」をアップロードして完了です！<br>次の画面で写真を添付して送信してください。</p>
+            <a id="final-link" href="" target="_blank" class="inline-block bg-blue-600 text-white px-12 py-5 rounded-full text-lg font-bold tracking-widest shadow-xl hover:bg-blue-700">写真をアップロードして完了する</a>
+            <div class="mt-8 text-xs text-slate-400 text-center">※お名前等は自動入力されています。そのまま写真を添付してください。</div>
+        </div>
+    </div>
+
+    <div id="floatBtn" class="float-btn text-center">
+        <a href="#apply-form" class="bg-blue-600 text-white px-10 py-5 rounded-full text-sm font-bold shadow-2xl inline-block">AI無料診断にエントリーする</a>
+    </div>
+
+    <script>
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('form-name').value;
+            const age = document.getElementById('form-age').value;
+            const pref = document.getElementById('form-pref').value;
+            const email = document.getElementById('form-email').value;
+
+            // 【いとーちゃんのフォーム専用IDを反映済み！】
+            const baseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdKr5_cB00bIh-pGKADFyxSD5RLkE8E0Bb0YiQwdXoeb-nftA/viewform";
+            const prefillUrl = `${baseUrl}?usp=pp_url` + 
+                `&entry.913274650=${encodeURIComponent(name)}` +
+                `&entry.208064384=${encodeURIComponent(age)}` +
+                `&entry.1416753404=${encodeURIComponent(pref)}` +
+                `&entry.1983284336=${encodeURIComponent(email)}`;
+
+            document.getElementById('main-content').style.display = 'none';
+            document.getElementById('floatBtn').style.display = 'none';
+            document.getElementById('thanks-screen').style.display = 'flex';
+            document.getElementById('final-link').href = prefillUrl;
+            window.scrollTo(0, 0);
+        }
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('floatBtn');
+            if (window.scrollY > 400) btn.classList.add('show'); else btn.classList.remove('show');
+        });
+    </script>
+</body>
+</html>
