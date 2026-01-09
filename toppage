@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -22,34 +22,34 @@
         .phrase-unit { display: inline-block; white-space: nowrap; }
         .logo-box { width: 55px; height: 55px; background-color: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         
-        /* Formrun 隠し加工用コンテナ */
-        .form-container {
-            width: 100%;
-            height: 950px; /* フォームの長さに合わせて調整 */
-            overflow: hidden;
-            position: relative;
-            border-radius: 2.5rem;
-            background: #fff;
+        /* --- Formrun カスタムCSS --- */
+        /* 埋め込まれたフォーム内の不要な要素を消す */
+        .formrun-embed-header, 
+        .formrun-embed-footer,
+        [class*="formrun-ad"],
+        div[style*="text-align: center"] > a[href*="form.run"] {
+            display: none !important;
         }
-        .form-container iframe {
-            position: absolute;
-            top: -115px; /* 上の画像を隠す */
-            left: 0;
-            width: 100%;
-            height: calc(100% + 200px); /* 下の広告を枠外に追いやる */
-            border: none;
+        
+        .form-wrapper {
+            background: #fff;
+            border-radius: 2.5rem;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
         }
 
         .legal-box { font-size: 0.95rem; color: #475569; padding: 2rem; background-color: #f8fafc; border-radius: 1.5rem; margin-top: 0.8rem; text-align: left; }
         details summary { cursor: pointer; list-style: none; outline: none; font-weight: 700; letter-spacing: 0.05em; padding: 1rem 0; border-bottom: 1px solid #f1f5f9; }
         .plus-icon { color: var(--blue); font-size: 1.4rem; transition: transform 0.3s; font-weight: bold; }
         details[open] .plus-icon { transform: rotate(45deg); }
+        
         .float-btn { position: fixed; bottom: 30px; right: 30px; z-index: 100; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.5s ease; }
         .float-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        
         @media (max-width: 768px) { 
             .float-btn { bottom: 20px; right: 20px; left: 20px; } 
             .float-btn a { width: 100%; text-align: center; }
-            .form-container { height: 1100px; } /* スマホはフォームが縦に伸びるため高めに設定 */
+            .form-wrapper { padding: 1rem; }
         }
     </style>
 </head>
@@ -123,15 +123,13 @@
                     </div>
                 </div>
 
-                <div class="form-container shadow-2xl border border-slate-100">
-                    <iframe 
-                        src="https://form.run/@yesbit--GZVHS7NtUeyQDLE1n9Vr" 
-                        title="FENEX Agency Audition Form">
-                    </iframe>
+                <div class="form-wrapper">
+                    <div class="formrun-embed" data-formrun-form="@yesbit--GZVHS7NtUeyQDLE1n9Vr" data-formrun-redirect="true"></div>
+                    <script src="https://sdk.form.run/js/v2/embed.js"></script>
                 </div>
                 
                 <p class="text-center text-slate-400 text-xs mt-8">
-                    ※フォームが表示されない場合は、ページを再読み込みしてください。
+                    ※送信後、確認メールが届かない場合はアドレスをご確認ください。
                 </p>
             </div>
         </section>
