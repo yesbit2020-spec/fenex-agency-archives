@@ -1,6 +1,6 @@
 <?php
 // --- 設定：ここにいとーちゃんのメールアドレスを入れてね ---
-$to = "ここに自分のメールアドレスを記入"; 
+$to = "yesbit2020+agency@gmail.com"; 
 $subject = "【Fenex Agency】AI診断エントリー届いたよっ！";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
