@@ -114,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // === TEST ONLY: 一時的にエンベロープ送信者を override してバウンス確認 ===
         // テストが終わったらこのブロックを削除または $test_envelope を false にしてください。
-        $test_envelope = true; // set to false to disable
+        $test_envelope = false; // set to false to disable
         if ($test_envelope) {
             $override_envelope = 'kentaro-itou@live.jp';
             $from_address = $override_envelope; // Return-Path に使われる
@@ -154,6 +154,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $subject_encoded = mb_encode_mimeheader($subject, 'UTF-8');
 
+        // プレーンテキスト本文（SMTP利用時はこちらを使う）
+        $plain_body  = "エントリーがありました！\n\n";
+        $plain_body .= "お名前：" . $name . "\n";
+        $plain_body .= "年齢：" . $age . "\n";
+        $plain_body .= "地域：" . $pref . "\n";
+        $plain_body .= "メール：" . $email . "\n\n";
+
         // 送信前の完全なメールダンプ（添付のbase64は省略）を保存
         $mail_dump_file = __DIR__ . '/mail_full_debug.log';
         $safe_body = $body;
@@ -165,31 +172,124 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         @file_put_contents($mail_dump_file, $dump, FILE_APPEND | LOCK_EX);
         error_log('[mail-debug] mail dump written to ' . $mail_dump_file);
 
-        // 送信（エンベロープ送信者を指定して MTA に渡す）
-        $additional_parameters = '-f' . $from_address;
+        // --- SMTP 設定（PHPMailer を直接導入して利用） ---
+        // パスワードは外部ファイル（smtp_credentials.php）に置くことを推奨します。
+        $use_smtp = true; // SMTP を有効化（info@fenex.jp のアカウントを使用）
+        $smtp_config = [
+            'host' => 'smtp.heteml.jp',
+            'port' => 465,
+            'username' => 'info@fenex.jp',
+            'password' => '', // 後で smtp_credentials.php かここにパスワードを設定してください
+            'encryption' => 'ssl',
+            'from_address' => 'info@fenex.jp',
+            'from_name' => 'Fenex Agency'
+        ];
+        // 認証情報は外部ファイルに分離して管理（例: __DIR__ . '/smtp_credentials.php' が ['password'=>'...'] を返す）
+        $creds_file = __DIR__ . '/smtp_credentials.php';
+        if (file_exists($creds_file)) {
+            $creds = include $creds_file;
+            if (is_array($creds) && !empty($creds['password'])) {
+                $smtp_config['password'] = $creds['password'];
+            }
+        }
 
-        // デバッグ情報（エラーログへ）
-        $ini_info = sprintf("sendmail_path=%s, SMTP=%s, smtp_port=%s", ini_get('sendmail_path'), ini_get('SMTP'), ini_get('smtp_port'));
-        error_log("[mail-debug] ini: {$ini_info}");
-        error_log("[mail-debug] to={$to} subject={$subject_encoded} from={$from_address} replyTo={$replyTo} envelope={$additional_parameters}");
+        // PHPMailer の読み込み（composer/autoload を優先、無ければプロジェクト内の PHPMailer/src を期待）
+        $phpmailer_loaded = false;
+        if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+            require_once __DIR__ . '/vendor/autoload.php';
+            $phpmailer_loaded = class_exists('PHPMailer\\PHPMailer\\PHPMailer');
+        } else {
+            $pmPath = __DIR__ . '/PHPMailer/src/';
+            if (file_exists($pmPath . 'PHPMailer.php')) {
+                require_once $pmPath . 'Exception.php';
+                require_once $pmPath . 'PHPMailer.php';
+                require_once $pmPath . 'SMTP.php';
+                $phpmailer_loaded = class_exists('PHPMailer\\PHPMailer\\PHPMailer');
+            }
+        }
+        if (!$phpmailer_loaded) {
+            error_log('[mail-debug] PHPMailer not found. Place PHPMailer in "PHPMailer/src" or run composer require phpmailer/phpmailer');
+            @file_put_contents($logfile, date('c') . " | smtp error: PHPMailer not installed\n", FILE_APPEND | LOCK_EX);
+        }
 
-        // 可能なら詳細ログ（ファイル）にも追記
-        $logfile = __DIR__ . '/mail_debug.log';
-        $logentry = date('c') . " | to={$to} | from={$from_address} | replyTo={$replyTo} | envelope={$additional_parameters} | sendmail_path=" . ini_get('sendmail_path') . "\n";
-        @file_put_contents($logfile, $logentry, FILE_APPEND | LOCK_EX);
+        $sent = false;
 
-        $sent = mail($to, $subject_encoded, $body, $headers, $additional_parameters);
+        if ($use_smtp) {
+            // PHPMailer による SMTP 送信
+            if (!class_exists('PHPMailer\\PHPMailer\\PHPMailer')) {
+                error_log('[mail-debug] PHPMailer not found. Install via: composer require phpmailer/phpmailer');
+                @file_put_contents($logfile, date('c') . " | smtp error: PHPMailer not installed\n", FILE_APPEND | LOCK_EX);
+            } else {
+                try {
+                    $mail = new PHPMailer\\PHPMailer\\PHPMailer(true);
+                    $mail->CharSet = 'UTF-8';
+                    $mail->isSMTP();
+                    $mail->Host = $smtp_config['host'];
+                    $mail->SMTPAuth = true;
+                    $mail->Username = $smtp_config['username'];
+                    $mail->Password = $smtp_config['password'];
+                    if (!empty($smtp_config['encryption'])) { $mail->SMTPSecure = $smtp_config['encryption']; }
+                    $mail->Port = $smtp_config['port'];
+
+                    $mail->setFrom($smtp_config['from_address'], $smtp_config['from_name']);
+                    $mail->addAddress($to);
+                    if (!empty($replyTo)) { $mail->addReplyTo($replyTo); }
+
+                    $mail->Subject = $subject;
+                    $mail->Body    = $plain_body;
+                    $mail->AltBody = $plain_body;
+                    $mail->isHTML(false);
+
+                    // 添付がある場合は base64 をデコードして添付
+                    if ($attachment !== null) {
+                        // attachment['content'] は chunk_split(base64...)
+                        $b64 = preg_replace('/\\s+/', '', $attachment['content']);
+                        $data = base64_decode($b64);
+                        $mail->addStringAttachment($data, $attachment['filename'], 'base64', $attachment['mime']);
+                    }
+
+                    $mail->send();
+                    $sent = true;
+                    error_log("[mail-debug] SMTP send OK to {$to}");
+                    @file_put_contents($logfile, date('c') . " | smtp sent OK to={$to}\n", FILE_APPEND | LOCK_EX);
+                } catch (\\Exception $e) {
+                    $err = $mail->ErrorInfo ?? $e->getMessage();
+                    error_log("[mail-debug] SMTP send FAILED: " . $err);
+                    @file_put_contents($logfile, date('c') . " | smtp send FAILED to={$to} err=" . $err . "\n", FILE_APPEND | LOCK_EX);
+                    $sent = false;
+                }
+            }
+        }
+
+        // SMTP 無効／SMTP 送信失敗時は既存の mail() を利用（フォールバック）
+        if (!$sent) {
+            $additional_parameters = '-f' . $from_address;
+
+            // デバッグ情報（エラーログへ）
+            $ini_info = sprintf("sendmail_path=%s, SMTP=%s, smtp_port=%s", ini_get('sendmail_path'), ini_get('SMTP'), ini_get('smtp_port'));
+            error_log("[mail-debug] ini: {$ini_info}");
+            error_log("[mail-debug] to={$to} subject={$subject_encoded} from={$from_address} replyTo={$replyTo} envelope={$additional_parameters}");
+
+            // 可能なら詳細ログ（ファイル）にも追記
+            $logfile = __DIR__ . '/mail_debug.log';
+            $logentry = date('c') . " | to={$to} | from={$from_address} | replyTo={$replyTo} | envelope={$additional_parameters} | sendmail_path=" . ini_get('sendmail_path') . "\n";
+            @file_put_contents($logfile, $logentry, FILE_APPEND | LOCK_EX);
+
+            $sent = mail($to, $subject_encoded, $body, $headers, $additional_parameters);
+
+            if ($sent) {
+                error_log("[mail-debug] Mail sent OK to {$to}");
+                @file_put_contents($logfile, date('c') . " | sent OK to={$to}\n", FILE_APPEND | LOCK_EX);
+            } else {
+                error_log("[mail-debug] Mail send FAILED for entry from {$email_sanitized}");
+                @file_put_contents($logfile, date('c') . " | send FAILED to={$to}\n", FILE_APPEND | LOCK_EX);
+            }
+        }
 
         if ($sent) {
-            error_log("[mail-debug] Mail sent OK to {$to}");
-            @file_put_contents($logfile, date('c') . " | sent OK to={$to}\n", FILE_APPEND | LOCK_EX);
-
             $safeName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
             echo "<h1>送信完了！</h1><p>ありがとうございます、{$safeName}。送信が完了しました。</p>";
         } else {
-            error_log("[mail-debug] Mail send FAILED for entry from {$email_sanitized}");
-            @file_put_contents($logfile, date('c') . " | send FAILED to={$to}\n", FILE_APPEND | LOCK_EX);
-
             echo "<h1>送信エラー</h1><p>送信中にエラーが発生しました。管理者へ連絡するか、サーバのメール設定（sendmail/postfix、SMTP）を確認してください。</p>";
         }
 
