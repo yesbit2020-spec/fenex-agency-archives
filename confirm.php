@@ -10,6 +10,22 @@ mb_internal_encoding("UTF-8");
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $errors = [];
 
+    // 初期デバッグログ：POST を受信したら必ず記録（検証エラーでメール処理に到達しない場合の調査用）
+    $logfile = __DIR__ . '/mail_debug.log';
+    $post_json = json_encode($_POST, JSON_UNESCAPED_UNICODE);
+    $files_summary = [];
+    foreach ($_FILES as $fk => $fv) {
+        $files_summary[$fk] = ['name' => $fv['name'] ?? '', 'size' => $fv['size'] ?? 0, 'error' => $fv['error'] ?? 'no'];
+    }
+    $files_json = json_encode($files_summary);
+    $entry = date('c') . " | POST received | script=" . __FILE__ . " | post=" . $post_json . " | files=" . $files_json . "\n";
+    $written = @file_put_contents($logfile, $entry, FILE_APPEND | LOCK_EX);
+    if ($written === false) {
+        error_log('[mail-debug] initial write FAILED');
+    } else {
+        error_log('[mail-debug] initial write OK');
+    }
+
     // 入力取得と簡易サニタイズ
     $name  = isset($_POST['name'])  ? trim($_POST['name'])  : '';
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
