@@ -76,8 +76,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // ヘッダーインジェクション対策：改行を除去
         $email_sanitized = str_replace(["\r", "\n"], '', $email);
 
-        // メールヘッダーは固定 From と Reply-To を利用
-        $from = 'Fenex Agency <no-reply@fenex.example>';
+        // 差出人アドレスをサーバのドメインに合わせて設定（fenex.example のままだと Gmail に弾かれる可能性が高い）
+        $server_name = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : gethostname();
+        $server_name = preg_replace('/[^a-z0-9.\-]/i', '', $server_name);
+        if ($server_name === '') { $server_name = 'localhost'; }
+        $from_address = 'no-reply@' . $server_name;
+        $from = 'Fenex Agency <' . $from_address . '>';
         $replyTo = $email_sanitized;
 
         $boundary = md5(uniqid(mt_rand(), true));
@@ -110,13 +114,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $subject_encoded = mb_encode_mimeheader($subject, 'UTF-8');
 
-        // 送信
-        if (mail($to, $subject_encoded, $body, $headers)) {
+        // 送信（エンベロープ送信者を指定して MTA に渡す）
+        $additional_parameters = '-f' . $from_address;
+
+        // デバッグ情報（エラーログへ）
+        $ini_info = sprintf("sendmail_path=%s, SMTP=%s, smtp_port=%s", ini_get('sendmail_path'), ini_get('SMTP'), ini_get('smtp_port'));
+        error_log("[mail-debug] ini: {$ini_info}");
+        error_log("[mail-debug] to={$to} subject={$subject_encoded} from={$from_address} replyTo={$replyTo} envelope={$additional_parameters}");
+
+        // 可能なら詳細ログ（ファイル）にも追記
+        $logfile = __DIR__ . '/mail_debug.log';
+        $logentry = date('c') . " | to={$to} | from={$from_address} | replyTo={$replyTo} | envelope={$additional_parameters} | sendmail_path=" . ini_get('sendmail_path') . "\n";
+        @file_put_contents($logfile, $logentry, FILE_APPEND | LOCK_EX);
+
+        $sent = mail($to, $subject_encoded, $body, $headers, $additional_parameters);
+
+        if ($sent) {
+            error_log("[mail-debug] Mail sent OK to {$to}");
+            @file_put_contents($logfile, date('c') . " | sent OK to={$to}\n", FILE_APPEND | LOCK_EX);
+
             $safeName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
             echo "<h1>送信完了！</h1><p>ありがとうございます、{$safeName}。送信が完了しました。</p>";
         } else {
-            error_log("Mail send failed for entry from {$email_sanitized}");
-            echo "<h1>送信エラー</h1><p>送信中にエラーが発生しました。時間をおいて再度お試しください。</p>";
+            error_log("[mail-debug] Mail send FAILED for entry from {$email_sanitized}");
+            @file_put_contents($logfile, date('c') . " | send FAILED to={$to}\n", FILE_APPEND | LOCK_EX);
+
+            echo "<h1>送信エラー</h1><p>送信中にエラーが発生しました。管理者へ連絡するか、サーバのメール設定（sendmail/postfix、SMTP）を確認してください。</p>";
         }
 
     } else {
