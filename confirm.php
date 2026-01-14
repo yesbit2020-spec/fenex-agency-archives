@@ -26,6 +26,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         error_log('[mail-debug] initial write OK');
     }
 
+    // mail_full_debug.log のテスト書き込み（ファイル作成と権限確認用）
+    $mail_full = __DIR__ . '/mail_full_debug.log';
+    $test_entry = date('c') . " | mail_full test write\n";
+    $res_full = @file_put_contents($mail_full, $test_entry, FILE_APPEND | LOCK_EX);
+    if ($res_full === false) {
+        // 書き込み失敗時は詳細をエラーログに残す（@ を使うがエラー情報を取得）
+        $err = error_get_last();
+        error_log('[mail-debug] mail_full write FAILED: ' . ($err['message'] ?? 'no details'));
+    } else {
+        error_log('[mail-debug] mail_full write OK: ' . $res_full);
+    }
+
     // 入力取得と簡易サニタイズ
     $name  = isset($_POST['name'])  ? trim($_POST['name'])  : '';
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
