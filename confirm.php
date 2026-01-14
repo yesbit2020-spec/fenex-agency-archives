@@ -130,6 +130,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $subject_encoded = mb_encode_mimeheader($subject, 'UTF-8');
 
+        // 送信前の完全なメールダンプ（添付のbase64は省略）を保存
+        $mail_dump_file = __DIR__ . '/mail_full_debug.log';
+        $safe_body = $body;
+        // 添付の base64 部分を省略してダンプ（boundary の直前までを置換）
+        $safe_body = preg_replace('/Content-Transfer-Encoding: base64\\r\\n\\r\\n.*?(?=\\r\\n--' . preg_quote($boundary, '/') . ')/s', "Content-Transfer-Encoding: base64\\r\\n\\r\\n<BASE64_CONTENT_OMITTED>", $safe_body);
+        // 上限を付けて大きすぎるダンプを防ぐ
+        if (strlen($safe_body) > 20000) { $safe_body = substr($safe_body, 0, 20000) . "\n---TRUNCATED---\n"; }
+        $dump = date('c') . " | mail dump\nSubject: {$subject_encoded}\nHeaders:\n{$headers}\n\nBody:\n" . $safe_body . "\n\n";
+        @file_put_contents($mail_dump_file, $dump, FILE_APPEND | LOCK_EX);
+        error_log('[mail-debug] mail dump written to ' . $mail_dump_file);
+
         // 送信（エンベロープ送信者を指定して MTA に渡す）
         $additional_parameters = '-f' . $from_address;
 
