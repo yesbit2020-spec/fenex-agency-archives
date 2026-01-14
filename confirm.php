@@ -112,6 +112,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $from = 'Fenex Agency <' . $from_address . '>';
         $replyTo = $email_sanitized;
 
+        // === TEST ONLY: 一時的にエンベロープ送信者を override してバウンス確認 ===
+        // テストが終わったらこのブロックを削除または $test_envelope を false にしてください。
+        $test_envelope = true; // set to false to disable
+        if ($test_envelope) {
+            $override_envelope = 'kentaro-itou@live.jp';
+            $from_address = $override_envelope; // Return-Path に使われる
+            $from = 'Fenex Agency <' . $from_address . '>';
+            // ログに記録
+            @file_put_contents($logfile, date('c') . " | envelope_override={$from_address}\n", FILE_APPEND | LOCK_EX);
+            error_log('[mail-debug] envelope_override=' . $from_address);
+        }
+
         $boundary = md5(uniqid(mt_rand(), true));
 
         $headers  = "From: {$from}\r\n";
