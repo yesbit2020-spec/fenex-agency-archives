@@ -73,12 +73,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $plain_body .= "地域：" . $pref . "\n";
         $plain_body .= "メール：" . $email . "\n\n";
 
-        // --- SMTP 設定 ---
+        // --- SMTP 設定（今度はGmailの直通ルートで行くわよ！） ---
         $smtp_config = [
-            'host' => 'smtp.heteml.jp',
-            'port' => 465,
-            'username' => 'info@fenex.jp',
-            'password' => '',
+            'host' => 'smtp.gmail.com',  // ヘテムルじゃなくてGmailに変える！
+            'port' => 465,               // ポートは465
+            'username' => 'yesbit2020＋agency@gmail.com', // いとーちゃんのGmailアドレス
+            'password' => 'sbjytndatqyohwsq', 
             'encryption' => 'ssl'
         ];
 
