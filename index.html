@@ -22,7 +22,6 @@
             box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.12); max-width: 850px; margin: 0 auto;
         }
 
-        /* 送信中のローディングアニメーション */
         .loader {
             border: 4px solid #f3f3f3; border-top: 4px solid #2563EB;
             border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite;
@@ -30,10 +29,13 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* ポップアップのスタイル */
+        /* エラー修正箇所：正しい backdrop-filter プロパティ */
         #overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.8); backdrop-blur: 8px; z-index: 1000;
+            background-color: rgba(15, 23, 42, 0.8);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
             justify-content: center; align-items: center;
         }
         .modal {
@@ -74,7 +76,6 @@
     <section id="apply-form" class="py-32 bg-slate-50 px-6">
         <div class="container mx-auto max-w-4xl text-center">
             <h2 class="text-4xl font-black mb-12 uppercase tracking-tighter text-[#0F172A]">Audition Form</h2>
-            
             <div class="form-card text-left">
                 <form id="entryForm" action="confirm.php" method="post" enctype="multipart/form-data" class="space-y-10">
                     <div>
@@ -147,42 +148,50 @@
                     <div id="content-company" class="hidden pb-6 text-sm text-slate-500 leading-relaxed space-y-2">
                         <p><strong>会社名：</strong> Fenex Agency</p>
                         <p><strong>代表者：</strong> 伊東 健太郎</p>
-                        <p><strong>住所：</strong> 神奈川県相模原市（※詳細住所をここへ）</p>
-                        <p><strong>連絡先：</strong> <a href="#" class="text-blue-600 underline">お問い合わせフォームはこちら</a></p>
+                        <p><strong>住所：</strong> 神奈川県相模原市</p>
+                        <p><strong>連絡先：</strong> <a href="#" class="text-blue-600 underline">お問い合わせはこちら</a></p>
                     </div>
                 </div>
-
                 <div class="border-b border-slate-100 pb-4">
                     <button onclick="toggleAccordion('privacy')" class="flex justify-between items-center w-full text-left py-4 group">
                         <span class="text-sm font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-600 transition-colors">02. Privacy Policy（プライバシーポリシー）</span>
                         <span id="icon-privacy" class="text-slate-300">＋</span>
                     </button>
                     <div id="content-privacy" class="hidden pb-6 text-xs text-slate-500 leading-relaxed">
-                        <p>当エージェンシーは、エントリーいただいた個人情報を、AI診断および採用選考の目的以外で使用することはありません。第三者への提供も、法令に基づく場合を除き、本人の同意なく行うことはありません。</p>
+                        <p>当エージェンシーは、個人情報を適切に管理いたします。</p>
                     </div>
                 </div>
-
                 <div class="border-b border-slate-100 pb-4">
                     <button onclick="toggleAccordion('protection')" class="flex justify-between items-center w-full text-left py-4 group">
-                        <span class="text-sm font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-600 transition-colors">03. Talent Protection（タレント保護に関して）</span>
+                        <span class="text-sm font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-600 transition-colors">03. Talent Protection（タレント保護）</span>
                         <span id="icon-protection" class="text-slate-300">＋</span>
                     </button>
-                    <div id="content-protection" class="hidden pb-6 text-xs text-slate-500 leading-relaxed space-y-3">
-                        <p>私たちは、所属タレントの心身の健康と安全を最優先に考えます。不当な契約の禁止、ハラスメントの徹底防止、そしてAI技術を活用した健全なキャリア形成を支援いたします。</p>
+                    <div id="content-protection" class="hidden pb-6 text-xs text-slate-500 leading-relaxed">
+                        <p>私たちは所属タレントの安全を最優先に考えます。</p>
                     </div>
                 </div>
             </div>
-
-            <div class="mt-20 text-center">
-                <div class="text-[10px] font-black text-slate-300 uppercase tracking-[0.5em]">
-                    © 2026 Fenex Agency. All Rights Reserved.
-                </div>
+            <div class="mt-20 text-center text-[10px] font-black text-slate-300 uppercase tracking-[0.5em]">
+                © 2026 Fenex Agency. All Rights Reserved.
             </div>
         </div>
     </footer>
 
     <script>
-        // 送信処理の制御
+        // アコーディオン制御
+        function toggleAccordion(id) {
+            const content = document.getElementById('content-' + id);
+            const icon = document.getElementById('icon-' + id);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.innerText = 'ー';
+            } else {
+                content.classList.add('hidden');
+                icon.innerText = '＋';
+            }
+        }
+
+        // 送信処理（AJAX）
         const form = document.getElementById('entryForm');
         const btn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
@@ -193,19 +202,18 @@
             btn.disabled = true;
             btn.style.opacity = '0.7';
             btnText.innerHTML = '<div class="loader"></div> 只今送信処理中...';
-
             const formData = new FormData(form);
             try {
                 const response = await fetch('confirm.php', { method: 'POST', body: formData });
-                if (response.ok) {
-                    overlay.style.display = 'flex';
-                } else {
-                    alert('送信に失敗しました。もう一度お試しください。');
-                    resetBtn();
+                if (response.ok) { 
+                    overlay.style.display = 'flex'; 
+                } else { 
+                    alert('送信に失敗しました。'); 
+                    resetBtn(); 
                 }
-            } catch (error) {
-                alert('ネットワークエラーが発生しました。');
-                resetBtn();
+            } catch (err) { 
+                alert('通信エラーが発生しました。'); 
+                resetBtn(); 
             }
         };
 
@@ -213,20 +221,6 @@
             btn.disabled = false;
             btn.style.opacity = '1';
             btnText.innerHTML = 'AI診断結果を受け取る 🚀';
-        }
-
-        // アコーディオンの制御
-        function toggleAccordion(id) {
-            const content = document.getElementById('content-' + id);
-            const icon = document.getElementById('icon-' + id);
-            
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                icon.innerText = 'ー';
-            } else {
-                content.classList.add('hidden');
-                icon.innerText = '＋';
-            }
         }
     </script>
 </body>
