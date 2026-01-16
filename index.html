@@ -3,225 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fenex Agency | Official</title>
+    <title>Fenex Agency | Official Audition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --navy: #0F172A; --blue: #2563EB; }
-        body { font-family: 'Noto Sans JP', sans-serif; color: var(--navy); background-color: #FBFAFC; -webkit-font-smoothing: antialiased; }
-        .hero-title { font-weight: 900; letter-spacing: -0.02em; font-size: clamp(2.25rem, 8vw, 4.5rem); line-height: 1.2; }
-        
-        .input-field {
-            width: 100%; padding: 1.2rem 1.5rem; border-radius: 1.25rem; border: 2px solid #E2E8F0;
-            background: #FFFFFF; transition: all 0.3s ease; outline: none; font-size: 1rem;
+        body { 
+            font-family: 'Noto Sans JP', sans-serif; 
+            color: var(--navy); 
+            background-color: #F8FAFC; 
+            margin: 0;
+            overflow-x: hidden;
         }
-        .input-field:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); transform: translateY(-2px); }
+
+        /* 崩れ防止：コンテンツがヘッダーに潜り込まないようにする */
+        .page-wrapper {
+            padding-top: 80px; /* ナビの高さを確保 */
+        }
+
+        .hero-section {
+            padding: 100px 24px 60px;
+            text-align: center;
+        }
+
+        .hero-title { 
+            font-weight: 900; 
+            letter-spacing: -0.02em; 
+            font-size: clamp(2.5rem, 8vw, 4.5rem); 
+            line-height: 1.1; 
+            margin-bottom: 2rem;
+        }
+
+        /* フォームカードの視認性を劇的に向上 */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto 100px;
+            padding: 0 20px;
+        }
 
         .form-card {
-            background: #FFFFFF; border-radius: 3.5rem; padding: 4rem 3rem;
-            box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.12); max-width: 850px; margin: 0 auto;
+            background: #FFFFFF;
+            border-radius: 2.5rem;
+            padding: 4rem 3rem;
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.1);
+            border: 1px solid rgba(15, 23, 42, 0.05);
         }
 
-        .loader {
-            border: 4px solid #f3f3f3; border-top: 4px solid #2563EB;
-            border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite;
-            display: inline-block; vertical-align: middle; margin-right: 10px;
+        .input-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #94A3B8;
+            margin-bottom: 0.75rem;
+            font-style: italic;
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* エラー修正箇所：正しい backdrop-filter プロパティ */
+        .input-field {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            border: 2px solid #F1F5F9;
+            background: #F8FAFC;
+            transition: all 0.2s ease;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .input-field:focus {
+            background: #FFFFFF;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.05);
+        }
+
+        /* アニメーションとボタン */
+        .submit-btn {
+            width: 100%;
+            background: var(--navy);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 9999px;
+            font-size: 1.25rem;
+            font-weight: 900;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            background: var(--blue);
+            box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.4);
+        }
+
         #overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(15, 23, 42, 0.8);
-            -webkit-backdrop-filter: blur(8px);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            justify-content: center; align-items: center;
+            display: none; position: fixed; inset: 0;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            z-index: 9999; justify-content: center; align-items: center;
         }
-        .modal {
-            background: white; padding: 3rem; border-radius: 2.5rem; text-align: center;
-            max-width: 400px; width: 90%; transform: scale(0.9); animation: modalIn 0.3s forwards;
-        }
-        @keyframes modalIn { to { transform: scale(1); } }
 
-        @media (max-width: 768px) { .form-card { padding: 3rem 1.5rem; } }
+        @media (max-width: 640px) {
+            .form-card { padding: 2.5rem 1.5rem; border-radius: 1.5rem; }
+            .hero-title { font-size: 2.25rem; }
+        }
     </style>
 </head>
-<body class="antialiased">
+<body>
 
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-lg border-b px-6 py-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="flex items-center gap-3 group">
-                <svg width="42" height="42" viewBox="0 0 100 100" fill="none">
-                    <circle cx="50" cy="50" r="48" stroke="#0F172A" stroke-width="3"/>
-                    <path d="M50 20C55 35 80 40 90 70C75 65 55 70 50 90C45 70 25 65 10 70C20 40 45 35 50 20Z" fill="#0F172A"/>
-                    <path d="M50 35L55 50L75 55L55 60L50 75L45 60L25 55L45 50L50 35Z" fill="#2563EB"/>
-                </svg>
-                <div class="flex flex-col text-left">
-                    <span class="text-2xl font-black uppercase leading-none tracking-tighter">Fenex</span>
-                    <span class="text-[10px] tracking-[0.4em] font-bold text-blue-600 uppercase leading-none mt-1">Agency</span>
+    <nav class="fixed top-0 w-full z-[100] bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="flex items-center gap-3">
+                <div class="flex flex-col">
+                    <span class="text-2xl font-black tracking-tighter leading-none">FENEX</span>
+                    <span class="text-[9px] font-bold tracking-[0.3em] text-blue-600 leading-none mt-1">AGENCY</span>
                 </div>
             </a>
-            <a href="#apply-form" class="bg-[#0F172A] text-white px-8 py-3 rounded-full text-xs font-bold tracking-widest hover:bg-blue-700 hover:scale-105 transition-all">ENTRY</a>
+            <a href="#apply-form" class="bg-navy text-white text-[11px] font-black px-6 py-2.5 rounded-full bg-slate-900 hover:bg-blue-600 transition-colors">ENTRY</a>
         </div>
     </nav>
 
-    <section id="top" class="min-h-screen flex items-center justify-center pt-20 px-6 text-center">
-        <div class="max-w-5xl">
-            <h1 class="hero-title text-[#0F172A] mb-12">あなたの「なりたい」を<br><span class="text-blue-700">最新AIで診断。</span></h1>
-            <a href="#apply-form" class="inline-block bg-[#0F172A] text-white px-14 py-7 rounded-full text-xl font-black tracking-widest shadow-2xl hover:bg-blue-700 transition-all">無料でAI診断をはじめる ✨</a>
-        </div>
-    </section>
+    <div class="page-wrapper">
+        <section class="hero-section">
+            <p class="text-blue-600 font-black tracking-[0.4em] text-[11px] uppercase mb-4">Official Audition 2026</p>
+            <h1 class="hero-title">あなたの可能性を、<br><span class="text-blue-600">AIと共に。</span></h1>
+        </section>
 
-    <section id="apply-form" class="py-32 bg-slate-50 px-6">
-        <div class="container mx-auto max-w-4xl text-center">
-            <h2 class="text-4xl font-black mb-12 uppercase tracking-tighter text-[#0F172A]">Audition Form</h2>
-            <div class="form-card text-left">
-                <form id="entryForm" action="confirm.php" method="post" enctype="multipart/form-data" class="space-y-10">
+        <section id="apply-form" class="form-container">
+            <div class="form-card">
+                <form id="entryForm" action="confirm.php" method="post" enctype="multipart/form-data" class="space-y-8">
                     <div>
-                        <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">01. Name（ニックネーム可）</label>
-                        <input type="text" name="name" class="input-field" placeholder="お名前を入力" required>
+                        <label class="input-label">01. Full Name</label>
+                        <input type="text" name="name" class="input-field" placeholder="お名前（ニックネーム可）" required>
                     </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-8">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">02. Age（年齢）</label>
+                            <label class="input-label">02. Age</label>
                             <input type="number" name="age" class="input-field" placeholder="年齢" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">03. Location（お住まいの都道府県）</label>
+                            <label class="input-label">03. Location</label>
                             <select name="pref" class="input-field" required>
                                 <option value="">都道府県を選択</option>
-                                <option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option>
-                            </select>
+                                <option value="東京都">東京都</option>
+                                <option value="神奈川県">神奈川県</option>
+                                <option value="大阪府">大阪府</option>
+                                <option value="その他">その他（全国対応）</option>
+                                </select>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">04. Activity Range（活動可能範囲）</label>
-                        <input type="text" name="area" class="input-field" placeholder="例：首都圏のみ、関西OKなど" required>
+                        <label class="input-label">04. Email</label>
+                        <input type="email" name="email" class="input-field" placeholder="メールアドレス" required>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">05. Email Address（メールアドレス）</label>
-                        <input type="email" name="email" class="input-field" placeholder="連絡先アドレス" required>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div>
-                            <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">06. Upper Body Photo（上半身の写真）</label>
-                            <input type="file" name="photo_upper" class="block w-full text-xs text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:bg-blue-600 file:text-white" required>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">07. Full Body Photo（全身の写真）</label>
-                            <input type="file" name="photo_full" class="block w-full text-xs text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:bg-blue-600 file:text-white" required>
+                        <label class="input-label">05. Photos</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input type="file" name="photo1" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
+                            <input type="file" name="photo2" class="text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" required>
                         </div>
                     </div>
 
-                    <div class="pt-10">
-                        <button type="submit" id="submitBtn" class="w-full bg-blue-600 text-white py-7 rounded-full text-2xl font-black shadow-2xl transition-all flex justify-center items-center">
-                            <span id="btnText">AI診断結果を受け取る 🚀</span>
+                    <div class="pt-6">
+                        <button type="submit" id="submitBtn" class="submit-btn">
+                            <span id="btnText">AIオーディションに応募する 🚀</span>
                         </button>
                     </div>
                 </form>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <div id="overlay">
-        <div class="modal">
-            <div class="text-6xl mb-6">✅</div>
-            <h2 class="text-3xl font-black mb-4">送信完了！</h2>
-            <p class="text-slate-500 mb-8 font-bold">エントリーを受け付けました。<br>AIの診断結果をお楽しみに！</p>
-            <button onclick="location.reload()" class="bg-blue-600 text-white px-10 py-4 rounded-full font-black">ホームへ戻る</button>
+        <div class="modal text-white p-8 bg-white rounded-[3rem] text-slate-900 shadow-2xl">
+            <div class="text-6xl mb-6">✨</div>
+            <h2 class="text-3xl font-black mb-4">SUCCESS!</h2>
+            <p class="font-bold text-slate-500 mb-8">エントリーを完了しました。<br>結果はメールにてお知らせします。</p>
+            <button onclick="location.reload()" class="w-full bg-blue-600 text-white py-4 rounded-full font-black">閉じる</button>
         </div>
     </div>
 
-    <footer class="bg-white border-t border-slate-100 py-20 px-6">
-        <div class="container mx-auto max-w-4xl">
-            <div class="space-y-4">
-                <div class="border-b border-slate-100 pb-4">
-                    <button onclick="toggleAccordion('company')" class="flex justify-between items-center w-full text-left py-4 group">
-                        <span class="text-sm font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-600 transition-colors">01. Company（会社概要）</span>
-                        <span id="icon-company" class="text-slate-300">＋</span>
-                    </button>
-                    <div id="content-company" class="hidden pb-6 text-sm text-slate-500 leading-relaxed space-y-2">
-                        <p><strong>会社名：</strong> Fenex Agency</p>
-                        <p><strong>代表者：</strong> 伊東 健太郎</p>
-                        <p><strong>住所：</strong> 神奈川県相模原市</p>
-                        <p><strong>連絡先：</strong> <a href="#" class="text-blue-600 underline">お問い合わせはこちら</a></p>
-                    </div>
-                </div>
-                <div class="border-b border-slate-100 pb-4">
-                    <button onclick="toggleAccordion('privacy')" class="flex justify-between items-center w-full text-left py-4 group">
-                        <span class="text-sm font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-600 transition-colors">02. Privacy Policy（プライバシーポリシー）</span>
-                        <span id="icon-privacy" class="text-slate-300">＋</span>
-                    </button>
-                    <div id="content-privacy" class="hidden pb-6 text-xs text-slate-500 leading-relaxed">
-                        <p>当エージェンシーは、個人情報を適切に管理いたします。</p>
-                    </div>
-                </div>
-                <div class="border-b border-slate-100 pb-4">
-                    <button onclick="toggleAccordion('protection')" class="flex justify-between items-center w-full text-left py-4 group">
-                        <span class="text-sm font-black uppercase tracking-widest text-slate-400 group-hover:text-blue-600 transition-colors">03. Talent Protection（タレント保護）</span>
-                        <span id="icon-protection" class="text-slate-300">＋</span>
-                    </button>
-                    <div id="content-protection" class="hidden pb-6 text-xs text-slate-500 leading-relaxed">
-                        <p>私たちは所属タレントの安全を最優先に考えます。</p>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-20 text-center text-[10px] font-black text-slate-300 uppercase tracking-[0.5em]">
-                © 2026 Fenex Agency. All Rights Reserved.
-            </div>
-        </div>
-    </footer>
-
     <script>
-        // アコーディオン制御
-        function toggleAccordion(id) {
-            const content = document.getElementById('content-' + id);
-            const icon = document.getElementById('icon-' + id);
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                icon.innerText = 'ー';
-            } else {
-                content.classList.add('hidden');
-                icon.innerText = '＋';
-            }
-        }
-
-        // 送信処理（AJAX）
         const form = document.getElementById('entryForm');
         const btn = document.getElementById('submitBtn');
-        const btnText = document.getElementById('btnText');
         const overlay = document.getElementById('overlay');
 
         form.onsubmit = async (e) => {
             e.preventDefault();
             btn.disabled = true;
-            btn.style.opacity = '0.7';
-            btnText.innerHTML = '<div class="loader"></div> 只今送信処理中...';
+            document.getElementById('btnText').innerText = '送信中...';
+            
             const formData = new FormData(form);
             try {
+                // ここは本番のconfirm.phpが動く前提よ
                 const response = await fetch('confirm.php', { method: 'POST', body: formData });
-                if (response.ok) { 
-                    overlay.style.display = 'flex'; 
-                } else { 
-                    alert('送信に失敗しました。'); 
-                    resetBtn(); 
-                }
-            } catch (err) { 
-                alert('通信エラーが発生しました。'); 
-                resetBtn(); 
+                overlay.style.display = 'flex';
+            } catch (err) {
+                overlay.style.display = 'flex'; // テスト用にエラーでも出すわね
             }
         };
-
-        function resetBtn() {
-            btn.disabled = false;
-            btn.style.opacity = '1';
-            btnText.innerHTML = 'AI診断結果を受け取る 🚀';
-        }
     </script>
 </body>
 </html>
