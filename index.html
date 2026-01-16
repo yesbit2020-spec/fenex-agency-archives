@@ -50,12 +50,17 @@
     <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-lg border-b px-6 py-4">
         <div class="container mx-auto flex justify-between items-center">
             <a href="#" class="flex items-center gap-3 group">
-                <svg width="42" height="42" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="48" stroke="#0F172A" stroke-width="3"/><path d="M50 20C55 35 80 40 90 70C75 65 55 70 50 90C45 70 25 65 10 70C20 40 45 35 50 20Z" fill="#0F172A"/><path d="M50 35L55 50L75 55L55 60L50 75L45 60L25 55L45 50L50 35Z" fill="#2563EB"/></svg>
+                <svg width="42" height="42" viewBox="0 0 100 100" fill="none">
+                    <circle cx="50" cy="50" r="48" stroke="#0F172A" stroke-width="3"/>
+                    <path d="M50 20C55 35 80 40 90 70C75 65 55 70 50 90C45 70 25 65 10 70C20 40 45 35 50 20Z" fill="#0F172A"/>
+                    <path d="M50 35L55 50L75 55L55 60L50 75L45 60L25 55L45 50L50 35Z" fill="#2563EB"/>
+                </svg>
                 <div class="flex flex-col text-left">
                     <span class="text-2xl font-black uppercase leading-none tracking-tighter">Fenex</span>
                     <span class="text-[10px] tracking-[0.4em] font-bold text-blue-600 uppercase leading-none mt-1">Agency</span>
                 </div>
             </a>
+            <a href="#apply-form" class="bg-[#0F172A] text-white px-8 py-3 rounded-full text-xs font-bold tracking-widest hover:bg-blue-700 hover:scale-105 transition-all">ENTRY</a>
         </div>
     </nav>
 
@@ -131,41 +136,7 @@
         </div>
     </div>
 
-    <script>
-        const form = document.getElementById('entryForm');
-        const btn = document.getElementById('submitBtn');
-        const btnText = document.getElementById('btnText');
-        const overlay = document.getElementById('overlay');
-
-        form.onsubmit = async (e) => {
-            e.preventDefault();
-            btn.disabled = true;
-            btn.style.opacity = '0.7';
-            btnText.innerHTML = '<div class="loader"></div> 只今送信処理中...';
-
-            const formData = new FormData(form);
-            try {
-                const response = await fetch('confirm.php', { method: 'POST', body: formData });
-                if (response.ok) {
-                    overlay.style.display = 'flex';
-                } else {
-                    alert('送信に失敗しました。もう一度お試しください。');
-                    resetBtn();
-                }
-            } catch (error) {
-                alert('ネットワークエラーが発生しました。');
-                resetBtn();
-            }
-        };
-
-        function resetBtn() {
-            btn.disabled = false;
-            btn.style.opacity = '1';
-            btnText.innerHTML = 'AI診断結果を受け取る 🚀';
-        }
-    </script>
-
-<footer class="bg-white border-t border-slate-100 py-20 px-6">
+    <footer class="bg-white border-t border-slate-100 py-20 px-6">
         <div class="container mx-auto max-w-4xl">
             <div class="space-y-4">
                 <div class="border-b border-slate-100 pb-4">
@@ -211,6 +182,40 @@
     </footer>
 
     <script>
+        // 送信処理の制御
+        const form = document.getElementById('entryForm');
+        const btn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const overlay = document.getElementById('overlay');
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+            btnText.innerHTML = '<div class="loader"></div> 只今送信処理中...';
+
+            const formData = new FormData(form);
+            try {
+                const response = await fetch('confirm.php', { method: 'POST', body: formData });
+                if (response.ok) {
+                    overlay.style.display = 'flex';
+                } else {
+                    alert('送信に失敗しました。もう一度お試しください。');
+                    resetBtn();
+                }
+            } catch (error) {
+                alert('ネットワークエラーが発生しました。');
+                resetBtn();
+            }
+        };
+
+        function resetBtn() {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btnText.innerHTML = 'AI診断結果を受け取る 🚀';
+        }
+
+        // アコーディオンの制御
         function toggleAccordion(id) {
             const content = document.getElementById('content-' + id);
             const icon = document.getElementById('icon-' + id);
