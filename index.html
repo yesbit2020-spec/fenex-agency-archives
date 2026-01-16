@@ -5,33 +5,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fenex Agency - AI診断エントリー</title>
     <style>
-        body { font-family: sans-serif; max-width: 600px; margin: 20px auto; padding: 20px; line-height: 1.6; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; }
-        input[type="text"], input[type="email"], input[type="number"], select { width: 100%; padding: 8px; box-sizing: border-box; }
-        .note { font-size: 0.8em; color: #666; }
-        button { background: #333; color: #fff; padding: 10px 20px; border: none; cursor: pointer; width: 100%; font-size: 1.1em; }
-        button:hover { background: #555; }
+        /* 全体のデザイン設定 */
+        body { 
+            background-color: #f8f9fa; 
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            color: #333;
+            max-width: 650px; 
+            margin: 40px auto; 
+            padding: 20px; 
+            line-height: 1.8;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        h1 { 
+            text-align: center; 
+            color: #000; 
+            font-size: 24px;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+        p.intro {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .form-group { margin-bottom: 25px; }
+        label { 
+            display: block; 
+            font-weight: bold; 
+            margin-bottom: 8px; 
+            font-size: 0.95em;
+        }
+        input[type="text"], input[type="email"], input[type="number"], select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 6px;
+            box-sizing: border-box; 
+            font-size: 16px; /* モバイルでズームしないサイズ */
+        }
+        input:focus, select:focus {
+            border-color: #000;
+            outline: none;
+        }
+        .note { font-size: 0.8em; color: #888; margin-top: 5px; }
+        
+        /* 送信ボタン */
+        button { 
+            background: #000; 
+            color: #fff; 
+            padding: 18px; 
+            border: none; 
+            border-radius: 6px;
+            cursor: pointer; 
+            width: 100%; 
+            font-size: 1.1em; 
+            font-weight: bold;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+        button:hover { background: #333; transform: translateY(-2px); }
+
+        /* 写真アップロード部分の装飾 */
+        input[type="file"] {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
-    <h1>Fenex Agency AI診断</h1>
-    <p>以下の項目を入力してエントリーしてください。</p>
+
+<div class="container">
+    <h1>Fenex Agency<br>AI診断エントリー</h1>
+    <p class="intro">あなたの可能性をAIが診断します。<br>必要事項を入力して送信してください。</p>
 
     <form action="confirm.php" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="name">NAME（ニックネームでも可）</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" placeholder="例：ケン" required>
         </div>
 
         <div class="form-group">
             <label for="email">メールアドレス</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
         </div>
 
         <div class="form-group">
             <label for="age">年齢</label>
-            <input type="number" id="age" name="age">
+            <input type="number" id="age" name="age" placeholder="20">
         </div>
 
         <div class="form-group">
@@ -48,18 +116,20 @@
         </div>
 
         <div class="form-group">
-            <label for="photo_upper">上半身の画像</label>
+            <label for="photo_upper">📷 上半身の画像</label>
             <input type="file" id="photo_upper" name="photo_upper" accept="image/*" required>
             <p class="note">※10MB以下のjpg/png/gif</p>
         </div>
 
         <div class="form-group">
-            <label for="photo_full">全身写真の画像</label>
+            <label for="photo_full">🧍 全身写真の画像</label>
             <input type="file" id="photo_full" name="photo_full" accept="image/*" required>
             <p class="note">※10MB以下のjpg/png/gif</p>
         </div>
 
         <button type="submit">AI診断エントリーを送信する</button>
     </form>
+</div>
+
 </body>
 </html>
