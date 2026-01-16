@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($file['error'] === UPLOAD_ERR_OK) {
             $maxSize = 10 * 1024 * 1024; // 10MB
-            //             if ($file['size'] > $maxSize) {
+                      if ($file['size'] > $maxSize) {
                 $errors[] = 'ファイルサイズは10MB以下にしてください。';
             } else {
                 // MIME タイプチェック
@@ -228,7 +228,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 @file_put_contents($logfile, date('c') . " | smtp error: PHPMailer not installed\n", FILE_APPEND | LOCK_EX);
             } else {
                 try {
-                    $mail = new PHPMailer\\PHPMailer\\PHPMailer(true);
+                    // 名前空間のバックスラッシュを全部取ったわよ！
+                    $mail = new PHPMailer(true); 
                     $mail->CharSet = 'UTF-8';
                     $mail->isSMTP();
                     $mail->Host = $smtp_config['host'];
@@ -247,26 +248,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $mail->AltBody = $plain_body;
                     $mail->isHTML(false);
 
-                    // 添付がある場合は base64 をデコードして添付
                     if ($attachment !== null) {
-                        // attachment['content'] は chunk_split(base64...)
-                        $b64 = preg_replace('/\\s+/', '', $attachment['content']);
+                        $b64 = preg_replace('/\s+/', '', $attachment['content']);
                         $data = base64_decode($b64);
                         $mail->addStringAttachment($data, $attachment['filename'], 'base64', $attachment['mime']);
                     }
 
-                    $mail->send();
+              $mail->send();
                     $sent = true;
                     error_log("[mail-debug] SMTP send OK to {$to}");
-                    @file_put_contents($logfile, date('c') . " | smtp sent OK to={$to}\n", FILE_APPEND | LOCK_EX);
                 } catch (Exception $e) {
                     $err = $mail->ErrorInfo ?? $e->getMessage();
                     error_log("[mail-debug] SMTP send FAILED: " . $err);
-                    @file_put_contents($logfile, date('c') . " | smtp send FAILED to={$to} err=" . $err . "\n", FILE_APPEND | LOCK_EX);
                     $sent = false;
                 }
             }
         }
+
+            
 
         // SMTP 無効／SMTP 送信失敗時は既存の mail() を利用（フォールバック）
         if (!$sent) {
