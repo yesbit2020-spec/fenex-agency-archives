@@ -185,11 +185,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'from_name' => 'Fenex Agency'
         ];
         // 認証情報は外部ファイルに分離して管理（例: __DIR__ . '/smtp_credentials.php' が ['password'=>'...'] を返す）
+        // --- 認証情報の読み込み ---
         $creds_file = __DIR__ . '/smtp_credentials.php';
         if (file_exists($creds_file)) {
-            $creds = include $creds_file;
-            if (is_array($creds) && !empty($creds['password'])) {
-                $smtp_config['password'] = $creds['password'];
+            require_once $creds_file; // ファイルを読み込む（defineを実行する）
+            
+            // もし定数 SMTP_PASS が定義されていたら、それを使う
+            if (defined('SMTP_PASS')) {
+                $smtp_config['password'] = SMTP_PASS;
+            }
+            // もし定数 SMTP_USER が定義されていたら、ユーザー名も上書きする
+            if (defined('SMTP_USER')) {
+                $smtp_config['username'] = SMTP_USER;
             }
         }
 
