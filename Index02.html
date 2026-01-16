@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fenex Agency | Official</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0F172A;
+            --blue: #2563EB;
+        }
+        body { 
+            font-family: 'Noto Sans JP', sans-serif; 
+            color: var(--navy);
+            background-color: #FFFFFF;
+            scroll-behavior: smooth;
+        }
+        .headline { font-weight: 900; letter-spacing: -0.01em; }
+        .hero-bg { background: linear-gradient(135deg, #FFFFFF 0%, #F1F5F9 100%); }
+        /* ロゴのホバーエフェクト */
+        .logo-link:hover { opacity: 0.8; transition: 0.3s; }
+    </style>
+</head>
+<body id="top" class="antialiased text-[18px]">
+
+    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b-4 border-slate-100 px-6 py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#top" class="flex items-center space-x-4 logo-link" aria-label="Fenex Agency Home">
+                <svg width="55" height="55" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="46" fill="#0F172A"/>
+                    <path d="M50 80 C55 65 95 60 95 35 C75 45 65 35 55 15 C52 30 55 45 50 55 C45 45 48 30 45 15 C35 35 25 45 5 35 C5 60 45 65 50 80 Z" fill="#FFFFFF"/>
+                    <circle cx="50" cy="42" r="4" fill="#FFFFFF"/>
+                </svg>
+                <div class="flex flex-col">
+                    <span class="text-3xl font-black uppercase leading-none tracking-tighter">Fenex</span>
+                    <span class="text-[10px] tracking-[0.4em] font-bold text-blue-600 uppercase leading-none mt-1">Agency</span>
+                </div>
+            </a>
+            
+            <a href="#audition" class="bg-[#0F172A] text-white px-10 py-4 rounded-full text-sm font-black tracking-widest hover:bg-blue-700 shadow-xl transition-all">
+                ENTRY
+            </a>
+        </div>
+    </nav>
+
+    <section class="min-h-screen flex items-center justify-center hero-bg pt-20 px-6">
+        <div class="max-w-5xl text-center">
+            <p class="text-blue-600 font-bold tracking-[0.5em] uppercase text-sm mb-8">AI & Talent Management</p>
+            <h1 class="text-5xl md:text-8xl headline text-[#0F172A] mb-12">
+                AIと感性が共鳴する、<br>
+                <span class="text-blue-700">次世代のスター創出。</span>
+            </h1>
+            <div class="w-32 h-2.5 bg-[#0F172A] mx-auto mb-12"></div>
+            <p class="max-w-3xl mx-auto text-[#374151] text-xl md:text-2xl font-bold leading-relaxed mb-16">
+                まだ見ぬ個性を、データとクリエイティブで加速させる。<br>
+                Fenex Agencyは、テクノロジーで才能の限界を突破します。
+            </p>
+            <a href="#audition" class="inline-block bg-[#0F172A] text-white px-20 py-8 rounded-full text-xl font-black tracking-widest shadow-2xl hover:scale-105 transition-transform">
+                オーディションに応募する
+            </a>
+        </div>
+    </section>
+
+    <section id="strength" class="py-32 bg-white px-6">
+        <div class="container mx-auto max-w-6xl">
+            <div class="mb-24 text-center">
+                <h2 class="text-5xl font-black text-[#0F172A] mb-4 uppercase">Our Strength</h2>
+                <p class="text-lg font-bold tracking-[0.3em] text-slate-400 uppercase italic">Leading the next generation</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="bg-slate-50 p-12 rounded-[2rem] border-2 border-slate-100">
+                    <span class="text-blue-600 font-black text-4xl mb-8 block">01</span>
+                    <h3 class="text-2xl font-black mb-6 text-[#0F172A]">AI Scouting</h3>
+                    <p class="text-lg font-bold leading-relaxed text-slate-600">
+                        SNSトレンドをAIで解析。個々のタレントが最も輝く市場を特定し、科学的なブランディングをサポートします。
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-12 rounded-[2rem] border-2 border-slate-100">
+                    <span class="text-blue-600 font-black text-4xl mb-8 block">02</span>
+                    <h3 class="text-2xl font-black mb-6 text-[#0F172A]">AI Production</h3>
+                    <p class="text-lg font-bold leading-relaxed text-slate-600">
+                        最新の生成AIを活用し、高品質なポートフォリオを瞬時に構築。あなたのビジュアル表現を無限に拡張します。
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-12 rounded-[2rem] border-2 border-slate-100">
+                    <span class="text-blue-600 font-black text-4xl mb-8 block">03</span>
+                    <h3 class="text-2xl font-black mb-6 text-[#0F172A]">Digital Identity</h3>
+                    <p class="text-lg font-bold leading-relaxed text-slate-600">
+                        エンジニア視点でデジタル資産を最適化。世界中へ届く圧倒的なデジタル・プレゼンスを構築します。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="audition" class="py-32 bg-[#0F172A] px-6 text-white text-center">
+        <div class="container mx-auto max-w-5xl">
+            <h2 class="text-5xl md:text-7xl font-black mb-20 tracking-tighter uppercase">New Talent Wanted</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 text-left max-w-4xl mx-auto mb-20">
+                <div class="bg-white/10 p-12 rounded-3xl border-2 border-white/20">
+                    <p class="text-blue-400 font-black text-sm tracking-widest uppercase mb-8 border-b-2 border-blue-400 pb-2 inline-block">募集カテゴリー</p>
+                    <ul class="text-2xl font-bold space-y-6">
+                        <li>・ 俳優 / 女優 / モデル</li>
+                        <li>・ インフルエンサー</li>
+                        <li>・ クリエイターすべて</li>
+                    </ul>
+                </div>
+                <div class="bg-white/10 p-12 rounded-3xl border-2 border-white/20">
+                    <p class="text-blue-400 font-black text-sm tracking-widest uppercase mb-8 border-b-2 border-blue-400 pb-2 inline-block">応募資格</p>
+                    <p class="text-2xl font-bold leading-relaxed">
+                        12歳〜25歳の男女。<br>
+                        事務所に所属していない方。<br>
+                        テクノロジーを愛する方。
+                    </p>
+                </div>
+            </div>
+            
+            <a href="https://line.me" class="inline-block bg-white text-[#0F172A] px-24 py-10 rounded-full font-black text-2xl shadow-2xl hover:bg-blue-50 transition-all">
+                LINEで今すぐ応募
+            </a>
+        </div>
+    </section>
+
+    <footer class="py-24 bg-white border-t-8 border-slate-100 text-center">
+        <p class="text-sm font-black text-slate-400 tracking-[0.8em] uppercase">© 2026 Fenex Agency. Empowering Talent.</p>
+    </footer>
+
+</body>
+</html>
