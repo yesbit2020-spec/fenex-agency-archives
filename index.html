@@ -11,14 +11,17 @@
         body { 
             font-family: 'Noto Sans JP', sans-serif; 
             color: var(--navy); 
-            background-color: #FBFAFC; 
+            background-color: #FFFFFF; 
             scroll-behavior: smooth; 
             line-height: 1.8;
             -webkit-font-smoothing: antialiased;
         }
+        
+        /* タイポグラフィ */
         .hero-title { font-weight: 900; letter-spacing: -0.02em; font-size: clamp(2.25rem, 8vw, 4.5rem); line-height: 1.2; }
         .phrase-unit { display: inline-block; white-space: nowrap; }
 
+        /* フォームのデザイン */
         .form-wrapper {
             background: #FFFFFF;
             border-radius: 3rem;
@@ -36,6 +39,7 @@
         .legal-box { font-size: 1rem; color: #334155; padding: 2rem; background-color: #f1f5f9; border-radius: 1.5rem; }
         details summary { cursor: pointer; list-style: none; font-weight: 700; padding: 1.2rem 0; border-bottom: 2px solid #e2e8f0; outline: none; }
         
+        /* ローダーとモーダル */
         .loader {
             border: 4px solid #f3f3f3; border-top: 4px solid #2563EB;
             border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite;
@@ -63,9 +67,9 @@
 </head>
 <body class="antialiased">
 
-    <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b px-6 py-4">
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 px-6 py-4">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="flex items-center gap-3">
+            <a href="#" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
                 <svg width="40" height="40" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="48" stroke="#0F172A" stroke-width="3"/><path d="M50 20C55 35 80 40 90 70C75 65 55 70 50 90C45 70 25 65 10 70C20 40 45 35 50 20Z" fill="#0F172A"/><path d="M50 35L55 50L75 55L55 60L50 75L45 60L25 55L45 50L50 35Z" fill="#2563EB"/></svg>
                 <div class="flex flex-col text-left">
                     <span class="text-2xl font-black uppercase leading-none tracking-tighter">Fenex</span>
@@ -76,7 +80,7 @@
         </div>
     </nav>
 
-    <section id="top" class="min-h-screen flex items-center justify-center pt-20 px-6 text-center">
+    <section id="top" class="min-h-screen flex items-center justify-center pt-20 px-6 text-center bg-gradient-to-b from-blue-50/80 to-white">
         <div class="max-w-5xl">
             <p class="text-blue-600 font-bold tracking-[0.5em] uppercase text-[12px] mb-8">Human & AI Creativity</p>
             <h1 class="hero-title text-[#0F172A] mb-12">
@@ -86,6 +90,39 @@
             </h1>
             <div class="w-20 h-1.5 bg-blue-600 mx-auto mb-12"></div>
             <a href="#apply-form" class="inline-block bg-[#0F172A] text-white px-12 py-6 rounded-full text-xl font-bold tracking-widest shadow-2xl hover:scale-105 transition-all">AI無料診断にエントリーする</a>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white px-6">
+        <div class="container mx-auto max-w-6xl">
+            <div class="mb-16 border-l-[6px] border-blue-600 pl-8">
+                <h2 class="text-4xl md:text-5xl font-black text-[#0F172A] tracking-tight mb-3 uppercase">Strength</h2>
+                <p class="text-slate-400 font-bold tracking-[0.2em] uppercase text-xs">Fenexが提供する3つのコア・バリュー</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <div>
+                    <p class="text-blue-600 text-4xl font-black mb-4 opacity-80">01</p>
+                    <h3 class="text-xl font-bold text-[#0F172A] mb-4">AI Scouting & Analytics</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm font-medium">
+                        SNSトレンドをAIで解析し、個々のタレントが最も輝く市場を特定。データに基づいた戦略的なセルフブランディングを強力にサポート。
+                    </p>
+                </div>
+                <div>
+                    <p class="text-blue-600 text-4xl font-black mb-4 opacity-80">02</p>
+                    <h3 class="text-xl font-bold text-[#0F172A] mb-4">AI Content Production</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm font-medium">
+                        最新の動画生成AI（Google Veo等）を活用し、ハイクオリティなポートフォリオを瞬時に構築。あなたのビジュアル表現を無限に拡張します。
+                    </p>
+                </div>
+                <div>
+                    <p class="text-blue-600 text-4xl font-black mb-4 opacity-80">03</p>
+                    <h3 class="text-xl font-bold text-[#0F172A] mb-4">Digital Identity</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm font-medium">
+                        エンジニア視点でデジタル資産（SNS・Web）を最適化。24時間365日、世界中へ届く圧倒的なデジタル・プレゼンスを構築します。
+                    </p>
+                </div>
+            </div>
         </div>
     </section>
 
