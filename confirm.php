@@ -64,9 +64,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $file = $_FILES['photo'];
 
         if ($file['error'] === UPLOAD_ERR_OK) {
-            $maxSize = 2 * 1024 * 1024; // 2MB
-            if ($file['size'] > $maxSize) {
-                $errors[] = 'ファイルサイズは2MB以下にしてください。';
+            $maxSize = 10 * 1024 * 1024; // 10MB
+            //             if ($file['size'] > $maxSize) {
+                $errors[] = 'ファイルサイズは10MB以下にしてください。';
             } else {
                 // MIME タイプチェック
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -259,7 +259,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $sent = true;
                     error_log("[mail-debug] SMTP send OK to {$to}");
                     @file_put_contents($logfile, date('c') . " | smtp sent OK to={$to}\n", FILE_APPEND | LOCK_EX);
-                } catch (\\Exception $e) {
+                } catch (Exception $e) {
                     $err = $mail->ErrorInfo ?? $e->getMessage();
                     error_log("[mail-debug] SMTP send FAILED: " . $err);
                     @file_put_contents($logfile, date('c') . " | smtp send FAILED to={$to} err=" . $err . "\n", FILE_APPEND | LOCK_EX);
