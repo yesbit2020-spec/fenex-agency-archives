@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fenex Agency | Official</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --navy: #0F172A; --blue: #2563EB; }
         body { 
             font-family: 'Noto Sans JP', sans-serif; 
             color: var(--navy); 
-            background-color: #FFFFFF; 
+            background-color: #FBFAFC; 
             scroll-behavior: smooth; 
             line-height: 1.8;
             -webkit-font-smoothing: antialiased;
         }
         
         /* タイポグラフィ */
-        .hero-title { font-weight: 900; letter-spacing: -0.02em; font-size: clamp(2.25rem, 8vw, 4.5rem); line-height: 1.2; }
+        .hero-title { font-weight: 900; letter-spacing: -0.02em; font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; }
         .phrase-unit { display: inline-block; white-space: nowrap; }
 
-        /* フォームのデザイン */
+        /* フォームラッパー */
         .form-wrapper {
             background: #FFFFFF;
             border-radius: 3rem;
@@ -36,8 +36,9 @@
         }
         .input-field:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); transform: translateY(-2px); }
 
-        .legal-box { font-size: 1rem; color: #334155; padding: 2rem; background-color: #f1f5f9; border-radius: 1.5rem; }
-        details summary { cursor: pointer; list-style: none; font-weight: 700; padding: 1.2rem 0; border-bottom: 2px solid #e2e8f0; outline: none; }
+        /* フッター内のボックス（文字を細く調整） */
+        .legal-box { font-size: 0.95rem; color: #475569; padding: 2rem; background-color: #f8fafc; border-radius: 1.5rem; font-weight: 400; }
+        details summary { cursor: pointer; list-style: none; font-weight: 700; padding: 1.5rem 0; border-bottom: 1px solid #e2e8f0; outline: none; letter-spacing: 0.05em; }
         
         /* ローダーとモーダル */
         .loader {
@@ -48,7 +49,7 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         #overlay {
-            display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8);
+            display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000;
             justify-content: center; align-items: center;
         }
@@ -58,7 +59,7 @@
         .float-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: 2.5rem; }
+            .hero-title { font-size: 2.8rem; }
             .form-wrapper { padding: 2rem 1.5rem; border-radius: 2rem; }
             .float-btn { bottom: 20px; right: 20px; left: 20px; }
             .float-btn a { width: 100%; text-align: center; }
@@ -80,45 +81,45 @@
         </div>
     </nav>
 
-    <section id="top" class="min-h-screen flex items-center justify-center pt-20 px-6 text-center bg-gradient-to-b from-blue-50/80 to-white">
+    <section id="top" class="min-h-screen flex items-center justify-center pt-20 px-6 text-center bg-gradient-to-b from-[#E0F2FE] via-[#F0F9FF] to-white">
         <div class="max-w-5xl">
-            <p class="text-blue-600 font-bold tracking-[0.5em] uppercase text-[12px] mb-8">Human & AI Creativity</p>
+            <p class="text-blue-600 font-bold tracking-[0.5em] uppercase text-sm mb-10">Human & AI Creativity</p>
             <h1 class="hero-title text-[#0F172A] mb-12">
                 <span class="phrase-unit">もっと、自分を好きになる。</span><br>
                 <span class="text-blue-700 phrase-unit">最新技術で、あなたの</span><br>
                 <span class="text-blue-700 phrase-unit">「なりたい」を一緒にかなえる。</span>
             </h1>
-            <div class="w-20 h-1.5 bg-blue-600 mx-auto mb-12"></div>
-            <a href="#apply-form" class="inline-block bg-[#0F172A] text-white px-12 py-6 rounded-full text-xl font-bold tracking-widest shadow-2xl hover:scale-105 transition-all">AI無料診断にエントリーする</a>
+            <div class="w-24 h-2 bg-blue-600 mx-auto mb-16 rounded-full"></div>
+            <a href="#apply-form" class="inline-block bg-[#0F172A] text-white px-14 py-7 rounded-full text-2xl font-bold tracking-widest shadow-2xl hover:scale-105 transition-all">AI無料診断にエントリー</a>
         </div>
     </section>
 
-    <section class="py-24 bg-white px-6">
+    <section class="py-32 bg-white px-6">
         <div class="container mx-auto max-w-6xl">
-            <div class="mb-16 border-l-[6px] border-blue-600 pl-8">
-                <h2 class="text-4xl md:text-5xl font-black text-[#0F172A] tracking-tight mb-3 uppercase">Strength</h2>
-                <p class="text-slate-400 font-bold tracking-[0.2em] uppercase text-xs">Fenexが提供する3つのコア・バリュー</p>
+            <div class="mb-20 border-l-[8px] border-blue-600 pl-10">
+                <h2 class="text-5xl md:text-6xl font-black text-[#0F172A] tracking-tighter mb-4 uppercase leading-none">Strength</h2>
+                <p class="text-slate-400 font-bold tracking-[0.2em] uppercase text-sm">Fenexが提供する3つのコア・バリュー</p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-12">
+            <div class="grid md:grid-cols-3 gap-16">
                 <div>
-                    <p class="text-blue-600 text-4xl font-black mb-4 opacity-80">01</p>
-                    <h3 class="text-xl font-bold text-[#0F172A] mb-4">AI Scouting & Analytics</h3>
-                    <p class="text-slate-600 leading-relaxed text-sm font-medium">
+                    <p class="text-blue-600 text-6xl font-black mb-6 opacity-20">01</p>
+                    <h3 class="text-2xl font-black text-[#0F172A] mb-6 leading-tight">AI Scouting<br>& Analytics</h3>
+                    <p class="text-slate-700 leading-loose text-base font-medium">
                         SNSトレンドをAIで解析し、個々のタレントが最も輝く市場を特定。データに基づいた戦略的なセルフブランディングを強力にサポート。
                     </p>
                 </div>
                 <div>
-                    <p class="text-blue-600 text-4xl font-black mb-4 opacity-80">02</p>
-                    <h3 class="text-xl font-bold text-[#0F172A] mb-4">AI Content Production</h3>
-                    <p class="text-slate-600 leading-relaxed text-sm font-medium">
-                        最新の動画生成AI（Google Veo等）を活用し、ハイクオリティなポートフォリオを瞬時に構築。あなたのビジュアル表現を無限に拡張します。
+                    <p class="text-blue-600 text-6xl font-black mb-6 opacity-20">02</p>
+                    <h3 class="text-2xl font-black text-[#0F172A] mb-6 leading-tight">AI Content<br>Production</h3>
+                    <p class="text-slate-700 leading-loose text-base font-medium">
+                        最新の動画生成AIを活用し、ハイクオリティなポートフォリオを瞬時に構築。あなたのビジュアル表現を無限に拡張します。
                     </p>
                 </div>
                 <div>
-                    <p class="text-blue-600 text-4xl font-black mb-4 opacity-80">03</p>
-                    <h3 class="text-xl font-bold text-[#0F172A] mb-4">Digital Identity</h3>
-                    <p class="text-slate-600 leading-relaxed text-sm font-medium">
+                    <p class="text-blue-600 text-6xl font-black mb-6 opacity-20">03</p>
+                    <h3 class="text-2xl font-black text-[#0F172A] mb-6 leading-tight">Digital<br>Identity</h3>
+                    <p class="text-slate-700 leading-loose text-base font-medium">
                         エンジニア視点でデジタル資産（SNS・Web）を最適化。24時間365日、世界中へ届く圧倒的なデジタル・プレゼンスを構築します。
                     </p>
                 </div>
@@ -126,7 +127,7 @@
         </div>
     </section>
 
-    <section id="apply-form" class="py-32 bg-slate-100 px-6">
+    <section id="apply-form" class="py-32 bg-slate-50 px-6">
         <div class="container mx-auto max-w-4xl text-center">
             <div class="mb-20">
                 <h2 class="text-4xl md:text-5xl font-black mb-4 uppercase tracking-tighter text-[#0F172A]">Audition Form</h2>
@@ -199,16 +200,38 @@
                     <p class="text-3xl font-black text-[#0F172A] mb-4">Human & AI Creativity</p>
                     <p class="text-slate-400 text-xs font-bold uppercase tracking-[0.3em]">Empowering the next generation</p>
                 </div>
-                <div class="space-y-6">
+                <div class="space-y-4">
                     <details class="group" open>
-                        <summary class="text-lg uppercase tracking-widest text-[#0F172A] border-b pb-2 flex justify-between items-center">
-                            About Us <span class="group-open:rotate-45 transition-transform">+</span>
+                        <summary class="text-lg uppercase tracking-widest text-[#0F172A] flex justify-between items-center">
+                            About Us <span class="group-open:rotate-45 transition-transform text-slate-300 font-light">+</span>
                         </summary>
                         <div class="legal-box mt-4 space-y-4">
                             <dl class="space-y-4">
-                                <div class="border-b border-slate-200 pb-2"><dt class="text-slate-400 text-[10px] uppercase mb-1">Representative</dt><dd class="text-lg font-bold">伊東 健太郎</dd></div>
-                                <div class="border-b border-slate-200 pb-2"><dt class="text-slate-400 text-[10px] uppercase mb-1">Location</dt><dd class="text-lg font-bold">神奈川県相模原市</dd></div>
+                                <div class="border-b border-slate-200 pb-2"><dt class="text-slate-400 text-[10px] uppercase mb-1">Representative</dt><dd>伊東 健太郎</dd></div>
+                                <div class="border-b border-slate-200 pb-2"><dt class="text-slate-400 text-[10px] uppercase mb-1">Location</dt><dd>神奈川県相模原市</dd></div>
                             </dl>
+                        </div>
+                    </details>
+                    
+                    <details class="group">
+                        <summary class="text-lg uppercase tracking-widest text-[#0F172A] flex justify-between items-center">
+                            Privacy Policy <span class="group-open:rotate-45 transition-transform text-slate-300 font-light">+</span>
+                        </summary>
+                        <div class="legal-box mt-4">
+                            <p class="leading-relaxed">
+                                当エージェンシーは、個人情報の保護を最優先事項としています。お預かりしたデータは、AI診断および採用選考の目的のみに使用し、第三者への開示は行いません。
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="group">
+                        <summary class="text-lg uppercase tracking-widest text-[#0F172A] flex justify-between items-center">
+                            Talent Protection <span class="group-open:rotate-45 transition-transform text-slate-300 font-light">+</span>
+                        </summary>
+                        <div class="legal-box mt-4">
+                            <p class="leading-relaxed">
+                                所属タレントの心身の安全を守るため、ハラスメント防止対策やメンタルケア体制を整備しています。AIと共存する健全なキャリア形成を支援します。
+                            </p>
                         </div>
                     </details>
                 </div>
