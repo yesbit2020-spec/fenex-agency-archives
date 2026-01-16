@@ -7,61 +7,43 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --navy: #0F172A; --blue: #2563EB; --pink: #FDF2F8; }
-        body { 
-            font-family: 'Noto Sans JP', sans-serif; 
-            color: var(--navy); 
-            background-color: #FBFAFC; 
-            scroll-behavior: smooth; 
-            -webkit-font-smoothing: antialiased;
-        }
+        :root { --navy: #0F172A; --blue: #2563EB; }
+        body { font-family: 'Noto Sans JP', sans-serif; color: var(--navy); background-color: #FBFAFC; -webkit-font-smoothing: antialiased; }
         .hero-title { font-weight: 900; letter-spacing: -0.02em; font-size: clamp(2.25rem, 8vw, 4.5rem); line-height: 1.2; }
-        .phrase-unit { display: inline-block; white-space: nowrap; }
-
+        
+        /* 入力フィールド */
         .input-field {
-            width: 100%;
-            padding: 1.2rem 1.5rem;
-            border-radius: 1.25rem;
-            border: 2px solid #E2E8F0;
-            background: #FFFFFF;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-            font-size: 1rem;
-            color: #0F172A;
+            width: 100%; padding: 1.2rem 1.5rem; border-radius: 1.25rem; border: 2px solid #E2E8F0;
+            background: #FFFFFF; transition: all 0.3s ease; outline: none; font-size: 1rem;
         }
-        .input-field:focus {
-            border-color: var(--blue);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-            transform: translateY(-2px);
-        }
+        .input-field:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); transform: translateY(-2px); }
 
         .form-card {
-            background: #FFFFFF;
-            border-radius: 3.5rem;
-            padding: 4rem 3rem;
-            box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.12);
-            max-width: 850px;
-            margin: 0 auto;
-            border: 1px solid rgba(15, 23, 42, 0.03);
+            background: #FFFFFF; border-radius: 3.5rem; padding: 4rem 3rem;
+            box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.12); max-width: 850px; margin: 0 auto;
         }
 
-        .float-btn { position: fixed; bottom: 30px; right: 30px; z-index: 100; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.5s ease; }
-        .float-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
-
-        /* セレクトボックスの見た目調整 */
-        select.input-field {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1.5rem center;
-            background-size: 1.2rem;
+        /* 送信中のローディングアニメーション */
+        .loader {
+            border: 4px solid #f3f3f3; border-top: 4px solid #2563EB;
+            border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite;
+            display: inline-block; vertical-align: middle; margin-right: 10px;
         }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @media (max-width: 768px) {
-            .form-card { padding: 3rem 1.5rem; border-radius: 2.5rem; }
-            .float-btn { bottom: 20px; right: 20px; left: 20px; }
-            .float-btn a { width: 100%; text-align: center; }
+        /* ポップアップのスタイル */
+        #overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.8); backdrop-blur: 8px; z-index: 1000;
+            justify-content: center; align-items: center;
         }
+        .modal {
+            background: white; padding: 3rem; border-radius: 2.5rem; text-align: center;
+            max-width: 400px; width: 90%; transform: scale(0.9); animation: modalIn 0.3s forwards;
+        }
+        @keyframes modalIn { to { transform: scale(1); } }
+
+        @media (max-width: 768px) { .form-card { padding: 3rem 1.5rem; } }
     </style>
 </head>
 <body class="antialiased">
@@ -69,115 +51,126 @@
     <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-lg border-b px-6 py-4">
         <div class="container mx-auto flex justify-between items-center">
             <a href="#" class="flex items-center gap-3 group">
-                <svg width="42" height="42" viewBox="0 0 100 100" fill="none" class="group-hover:rotate-12 transition-transform">
-                    <circle cx="50" cy="50" r="48" stroke="#0F172A" stroke-width="3"/>
-                    <path d="M50 20C55 35 80 40 90 70C75 65 55 70 50 90C45 70 25 65 10 70C20 40 45 35 50 20Z" fill="#0F172A"/>
-                    <path d="M50 35L55 50L75 55L55 60L50 75L45 60L25 55L45 50L50 35Z" fill="#2563EB"/>
-                </svg>
+                <svg width="42" height="42" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="48" stroke="#0F172A" stroke-width="3"/><path d="M50 20C55 35 80 40 90 70C75 65 55 70 50 90C45 70 25 65 10 70C20 40 45 35 50 20Z" fill="#0F172A"/><path d="M50 35L55 50L75 55L55 60L50 75L45 60L25 55L45 50L50 35Z" fill="#2563EB"/></svg>
                 <div class="flex flex-col text-left">
                     <span class="text-2xl font-black uppercase leading-none tracking-tighter">Fenex</span>
                     <span class="text-[10px] tracking-[0.4em] font-bold text-blue-600 uppercase leading-none mt-1">Agency</span>
                 </div>
             </a>
-            <a href="#apply-form" class="bg-[#0F172A] text-white px-8 py-3 rounded-full text-xs font-bold tracking-widest hover:bg-blue-700 hover:scale-105 transition-all">ENTRY</a>
         </div>
     </nav>
 
-    <section id="top" class="min-h-screen flex items-center justify-center pt-20 px-6 text-center bg-gradient-to-b from-white to-slate-50">
+    <section id="top" class="min-h-screen flex items-center justify-center pt-20 px-6 text-center">
         <div class="max-w-5xl">
-            <p class="text-blue-600 font-bold tracking-[0.6em] uppercase text-[12px] mb-8 animate-pulse">Human & AI Creativity</p>
-            <h1 class="hero-title text-[#0F172A] mb-12">
-                <span class="phrase-unit">もっと、自分を好きになる。</span><br>
-                <span class="text-blue-700 phrase-unit">最新技術で、あなたの</span><br>
-                <span class="text-blue-700 phrase-unit">「なりたい」を一緒にかなえる。</span>
-            </h1>
-            <div class="w-24 h-1.5 bg-blue-600 mx-auto mb-12 rounded-full"></div>
-            <a href="#apply-form" class="inline-block bg-[#0F172A] text-white px-14 py-7 rounded-full text-xl font-black tracking-widest shadow-2xl hover:scale-105 hover:bg-blue-700 transition-all">AI無料診断をはじめる ✨</a>
+            <h1 class="hero-title text-[#0F172A] mb-12">あなたの「なりたい」を<br><span class="text-blue-700">最新AIで診断。</span></h1>
+            <a href="#apply-form" class="inline-block bg-[#0F172A] text-white px-14 py-7 rounded-full text-xl font-black tracking-widest shadow-2xl hover:bg-blue-700 transition-all">無料でAI診断をはじめる ✨</a>
         </div>
     </section>
 
     <section id="apply-form" class="py-32 bg-slate-50 px-6">
         <div class="container mx-auto max-w-4xl text-center">
-            <div class="mb-20">
-                <h2 class="text-4xl md:text-5xl font-black mb-4 uppercase tracking-tighter text-[#0F172A]">Audition Form</h2>
-                <p class="text-blue-600 text-sm font-bold uppercase tracking-[0.4em] mb-12">Entry for AI Diagnosis</p>
-                <p class="text-[#0F172A] font-black text-2xl md:text-4xl mb-6 leading-tight">「AIは、あなたの可能性を否定しない。」</p>
-                <p class="text-slate-500 font-bold text-lg">あなたの魅力をAIに教えてあげてねっ！💌</p>
-            </div>
-
+            <h2 class="text-4xl font-black mb-12 uppercase tracking-tighter text-[#0F172A]">Audition Form</h2>
+            
             <div class="form-card text-left">
-                <form action="confirm.php" method="post" enctype="multipart/form-data" class="space-y-10">
+                <form id="entryForm" action="confirm.php" method="post" enctype="multipart/form-data" class="space-y-10">
                     <div>
-                        <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">01. Name</label>
-                        <input type="text" name="name" class="input-field" placeholder="名前 / ニックネームでも可" required>
+                        <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">01. Name（ニックネーム可）</label>
+                        <input type="text" name="name" class="input-field" placeholder="お名前を入力" required>
                     </div>
                     
                     <div class="grid md:grid-cols-2 gap-8">
                         <div>
-                            <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">02. Age</label>
+                            <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">02. Age</label>
                             <input type="number" name="age" class="input-field" placeholder="年齢" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">03. Location</label>
+                            <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">03. Location</label>
                             <select name="pref" class="input-field" required>
                                 <option value="">都道府県を選択</option>
-                                <option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option>
+                                <option value="北海道">北海道</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="愛知県">愛知県</option><option value="大阪府">大阪府</option><option value="福岡県">福岡県</option>
                             </select>
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">04. Activity Range</label>
-                        <input type="text" name="area" class="input-field" placeholder="活動可能範囲（例：首都圏のみ、関西OKなど）" required>
+                        <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">04. Activity Range</label>
+                        <input type="text" name="area" class="input-field" placeholder="例：首都圏のみ、全国OKなど" required>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">05. Email</label>
-                        <input type="email" name="email" class="input-field" placeholder="連絡のつくアドレスを教えてね" required>
+                        <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">05. Email</label>
+                        <input type="email" name="email" class="input-field" placeholder="連絡先アドレス" required>
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-8">
                         <div>
-                            <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">06. Upper Body Photo</label>
-                            <div class="relative group">
-                                <input type="file" name="photo_upper" class="block w-full text-xs text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer" required>
-                            </div>
+                            <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">06. 上半身の写真（Upper Photo）</label>
+                            <input type="file" name="photo_upper" class="block w-full text-xs text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:bg-blue-600 file:text-white" required>
                         </div>
                         <div>
-                            <label class="block text-sm font-black mb-4 uppercase tracking-wider text-slate-400 italic">07. Full Body Photo</label>
-                            <div class="relative group">
-                                <input type="file" name="photo_full" class="block w-full text-xs text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all cursor-pointer" required>
-                            </div>
+                            <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">07. 全身の写真（Full Body Photo）</label>
+                            <input type="file" name="photo_full" class="block w-full text-xs text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:bg-blue-600 file:text-white" required>
                         </div>
                     </div>
-                    <p class="mt-4 text-[10px] text-slate-400 font-bold leading-relaxed text-center">※AIがあなたのポテンシャルを分析するために、はっきり写った写真をアップしてねっ！📷✨</p>
 
                     <div class="pt-10">
-                        <button type="submit" class="w-full bg-blue-600 text-white py-7 rounded-full text-2xl font-black shadow-2xl hover:bg-blue-700 hover:scale-[1.02] active:scale-95 transition-all">
-                            AI診断結果を受け取る 🚀
+                        <button type="submit" id="submitBtn" class="w-full bg-blue-600 text-white py-7 rounded-full text-2xl font-black shadow-2xl transition-all flex justify-center items-center">
+                            <span id="btnText">AI診断結果を受け取る 🚀</span>
                         </button>
                     </div>
                 </form>
             </div>
-            
-            <p class="mt-16 text-slate-300 text-[10px] font-black tracking-[0.5em] uppercase">
-                © FENEX AGENCY AI RECRUITING SYSTEM
-            </p>
         </div>
     </section>
 
-    <footer class="py-20 bg-white px-6 border-t border-slate-100 text-center">
-        <div class="container mx-auto">
-            <div class="text-[10px] font-black text-slate-300 uppercase tracking-widest">© 2026 Fenex Agency.</div>
+    <div id="overlay">
+        <div class="modal">
+            <div class="text-6xl mb-6">✅</div>
+            <h2 class="text-3xl font-black mb-4">送信完了！</h2>
+            <p class="text-slate-500 mb-8 font-bold">エントリーを受け付けました。<br>AIの診断結果をお楽しみに！</p>
+            <button onclick="location.reload()" class="bg-blue-600 text-white px-10 py-4 rounded-full font-black">ホームへ戻る</button>
         </div>
-    </footer>
-
-    <div id="floatBtn" class="float-btn">
-        <a href="#apply-form" class="bg-blue-600 text-white px-10 py-5 rounded-full text-sm font-black shadow-2xl inline-block hover:bg-blue-700 hover:scale-105 transition-all">AI無料診断にエントリー 💖</a>
     </div>
 
     <script>
-        window.addEventListener('scroll', () => {
-            const btn = document.getElementById('floatBtn');
-            if (window.scrollY > 500) btn.classList.add('show'); else btn.classList.remove('show');
-        });
+        const form = document.getElementById('entryForm');
+        const btn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const overlay = document.getElementById('overlay');
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            
+            // ボタンを「送信中」状態にする
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+            btnText.innerHTML = '<div class="loader"></div> 只今送信処理中...';
+
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch('confirm.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    overlay.style.display = 'flex'; // ポップアップ表示！
+                } else {
+                    alert('送信に失敗しました。もう一度お試しください。');
+                    resetBtn();
+                }
+            } catch (error) {
+                alert('ネットワークエラーが発生しました。');
+                resetBtn();
+            }
+        };
+
+        function resetBtn() {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btnText.innerHTML = 'AI診断結果を受け取る 🚀';
+        }
+    </script>
+</body>
+</html>
