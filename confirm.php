@@ -126,3 +126,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $mail->send();
                 $sent = true;
                 @file_put_contents($logfile, date('c') . " | SMTP send OK\n", FILE_APPEND);
+            } catch (Exception $e) {
+                // エラー時はフォールバックせずにログを残して終了
+                $errMsg = isset($mail) ? $mail->ErrorInfo : $e->getMessage();
+                @file_put_contents($logfile, date('c') . " | SMTP send FAILED: " . $errMsg . "\n", FILE_APPEND);
+            }
+        } else {
+            @file_put_contents($logfile, date('c') . " | PHPMailer files not found in " . $pmPath . "\n", FILE_APPEND);
+        }
+
+        // 送信結果の表示
+        if ($sent) {
+            $safeName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+            echo "<h1>送信完了！</h1><p>ありがとうございます、{$safeName}。送信が完了しました。</p>";
+        } else {
+            echo "<h1>送信エラー</h1><p>送信に失敗しました。管理者へ連絡してください。</p>";
+        }
+
+    } else {
+        // 入力エラーの表示
+        echo "<h1>入力エラー</h1><ul>";
+        foreach ($errors as $e) { echo "<li>" . htmlspecialchars($e, ENT_QUOTES, 'UTF-8') . "</li>"; }
+        echo "</ul>";
+    }
+}
+?>
