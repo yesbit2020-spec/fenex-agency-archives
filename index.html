@@ -16,21 +16,17 @@
             line-height: 1.8;
             -webkit-font-smoothing: antialiased;
         }
-        
-        /* タイポグラフィ継承 */
         .hero-title { font-weight: 900; letter-spacing: -0.02em; font-size: clamp(2.25rem, 8vw, 4.5rem); line-height: 1.2; }
         .phrase-unit { display: inline-block; white-space: nowrap; }
 
-        /* フォームラッパー（白い部分） */
         .form-wrapper {
             background: #FFFFFF;
             border-radius: 3rem;
             padding: 3rem;
             box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.1);
-            text-align: left; /* フォーム内は左寄せ */
+            text-align: left;
         }
 
-        /* 入力フィールドのこだわりスタイル */
         .input-field {
             width: 100%; padding: 1.2rem 1.5rem; border-radius: 1.25rem; border: 2px solid #E2E8F0;
             background: #FFFFFF; transition: all 0.3s ease; outline: none; font-size: 1rem; color: #0F172A;
@@ -40,7 +36,6 @@
         .legal-box { font-size: 1rem; color: #334155; padding: 2rem; background-color: #f1f5f9; border-radius: 1.5rem; }
         details summary { cursor: pointer; list-style: none; font-weight: 700; padding: 1.2rem 0; border-bottom: 2px solid #e2e8f0; outline: none; }
         
-        /* 送信中のローディング */
         .loader {
             border: 4px solid #f3f3f3; border-top: 4px solid #2563EB;
             border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite;
@@ -48,7 +43,6 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* ポップアップ */
         #overlay {
             display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000;
@@ -71,7 +65,7 @@
 
     <nav class="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b px-6 py-4">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <a href="#" class="flex items-center gap-3">
                 <svg width="40" height="40" viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="48" stroke="#0F172A" stroke-width="3"/><path d="M50 20C55 35 80 40 90 70C75 65 55 70 50 90C45 70 25 65 10 70C20 40 45 35 50 20Z" fill="#0F172A"/><path d="M50 35L55 50L75 55L55 60L50 75L45 60L25 55L45 50L50 35Z" fill="#2563EB"/></svg>
                 <div class="flex flex-col text-left">
                     <span class="text-2xl font-black uppercase leading-none tracking-tighter">Fenex</span>
@@ -99,8 +93,7 @@
         <div class="container mx-auto max-w-4xl text-center">
             <div class="mb-20">
                 <h2 class="text-4xl md:text-5xl font-black mb-4 uppercase tracking-tighter text-[#0F172A]">Audition Form</h2>
-                <p class="text-blue-600 text-sm font-bold uppercase tracking-[0.4em] mb-12">Start AI Diagnosis</p>
-                <div class="bg-blue-50/50 p-10 rounded-[3rem] border border-blue-100">
+                <div class="bg-blue-50/50 p-10 rounded-[3rem] border border-blue-100 mt-12">
                     <p class="text-[#0F172A] font-black text-2xl md:text-3xl mb-4 leading-tight">「AIは、あなたの可能性を否定しない。」</p>
                     <p class="text-slate-600 text-lg font-bold">以下のフォームに必要事項を入力し、写真をアップロードしてください。</p>
                 </div>
@@ -144,4 +137,91 @@
                         </div>
                         <div>
                             <label class="block text-sm font-black mb-4 uppercase text-slate-400 italic">07. Full Body Photo（全身の写真）</label>
-                            <input type="file" name="photo_full" class="block w-full text-xs text-slate-500 file
+                            <input type="file" name="photo_full" class="block w-full text-xs text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:bg-blue-600 file:text-white" required>
+                        </div>
+                    </div>
+
+                    <div class="pt-10">
+                        <button type="submit" id="submitBtn" class="w-full bg-blue-600 text-white py-7 rounded-full text-2xl font-black shadow-2xl transition-all flex justify-center items-center">
+                            <span id="btnText">AI診断結果を受け取る 🚀</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <p class="mt-12 text-slate-400 text-sm font-bold tracking-widest uppercase">
+                © FENEX AGENCY AI RECRUITING SYSTEM
+            </p>
+        </div>
+    </section>
+
+    <footer class="py-24 bg-white px-6 border-t">
+        <div class="container mx-auto max-w-5xl">
+            <div class="grid md:grid-cols-2 gap-20 items-start mb-16">
+                <div>
+                    <p class="text-3xl font-black text-[#0F172A] mb-4">Human & AI Creativity</p>
+                    <p class="text-slate-400 text-xs font-bold uppercase tracking-[0.3em]">Empowering the next generation</p>
+                </div>
+                <div class="space-y-6">
+                    <details class="group" open>
+                        <summary class="text-lg uppercase tracking-widest text-[#0F172A] border-b pb-2 flex justify-between items-center">
+                            About Us <span class="group-open:rotate-45 transition-transform">+</span>
+                        </summary>
+                        <div class="legal-box mt-4 space-y-4">
+                            <dl class="space-y-4">
+                                <div class="border-b border-slate-200 pb-2"><dt class="text-slate-400 text-[10px] uppercase mb-1">Representative</dt><dd class="text-lg font-bold">伊東 健太郎</dd></div>
+                                <div class="border-b border-slate-200 pb-2"><dt class="text-slate-400 text-[10px] uppercase mb-1">Location</dt><dd class="text-lg font-bold">神奈川県相模原市</dd></div>
+                            </dl>
+                        </div>
+                    </details>
+                </div>
+            </div>
+            <div class="text-center text-xs font-bold text-slate-300 pt-12 border-t border-slate-100 uppercase tracking-widest">© 2026 Fenex Agency.</div>
+        </div>
+    </footer>
+
+    <div id="overlay">
+        <div class="modal">
+            <div class="text-6xl mb-6">✅</div>
+            <h2 class="text-3xl font-black mb-4">送信完了！</h2>
+            <p class="text-slate-500 mb-8 font-bold">エントリーを受け付けました。<br>AIの診断結果をお楽しみに！</p>
+            <button onclick="location.reload()" class="bg-blue-600 text-white px-10 py-4 rounded-full font-black">ホームへ戻る</button>
+        </div>
+    </div>
+
+    <div id="floatBtn" class="float-btn">
+        <a href="#apply-form" class="bg-blue-600 text-white px-10 py-5 rounded-full text-sm font-bold shadow-2xl inline-block hover:scale-105 transition-all">AI無料診断にエントリー</a>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('floatBtn');
+            if (window.scrollY > 500) btn.classList.add('show'); else btn.classList.remove('show');
+        });
+
+        const form = document.getElementById('entryForm');
+        const btn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const overlay = document.getElementById('overlay');
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+            btnText.innerHTML = '<div class="loader"></div> 只今送信処理中...';
+            const formData = new FormData(form);
+            try {
+                const response = await fetch('confirm.php', { method: 'POST', body: formData });
+                if (response.ok) { overlay.style.display = 'flex'; }
+                else { alert('送信失敗'); resetBtn(); }
+            } catch (err) { alert('通信エラー'); resetBtn(); }
+        };
+
+        function resetBtn() {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btnText.innerHTML = 'AI診断結果を受け取る 🚀';
+        }
+    </script>
+</body>
+</html>
