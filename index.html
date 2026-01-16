@@ -5,91 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fenex Agency - AI診断エントリー</title>
     <style>
-        /* 全体のデザイン設定 */
+        /* もとのサイトのデザインを復元 */
         body { 
-            background-color: #f8f9fa; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* 薄いグレーからブルーへのグラデーション */
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            color: #333;
-            max-width: 650px; 
-            margin: 40px auto; 
-            padding: 20px; 
-            line-height: 1.8;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
         h1 { 
             text-align: center; 
-            color: #000; 
-            font-size: 24px;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
+            color: #1a1a1a; 
+            font-size: 28px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
-        p.intro {
+        .intro {
             text-align: center;
-            font-size: 0.9em;
+            font-size: 14px;
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            line-height: 1.6;
         }
-        .form-group { margin-bottom: 25px; }
+        .form-group { margin-bottom: 20px; }
         label { 
             display: block; 
-            font-weight: bold; 
+            font-weight: 600; 
             margin-bottom: 8px; 
-            font-size: 0.95em;
+            font-size: 13px;
+            color: #444;
         }
         input[type="text"], input[type="email"], input[type="number"], select { 
             width: 100%; 
-            padding: 12px; 
-            border: 1px solid #ddd; 
-            border-radius: 6px;
+            padding: 12px 15px; 
+            border: 1px solid #e0e0e0; 
+            border-radius: 8px;
             box-sizing: border-box; 
-            font-size: 16px; /* モバイルでズームしないサイズ */
+            font-size: 15px;
+            background-color: #fff;
+            transition: all 0.3s ease;
         }
         input:focus, select:focus {
-            border-color: #000;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
             outline: none;
         }
-        .note { font-size: 0.8em; color: #888; margin-top: 5px; }
+        .note { font-size: 11px; color: #999; margin-top: 6px; display: block; }
         
-        /* 送信ボタン */
+        /* 写真アップロード部分をオシャレに */
+        .file-input-wrapper {
+            background: #fdfdfd;
+            border: 2px dashed #eee;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        .file-input-wrapper:hover { border-color: #ccc; }
+        input[type="file"] { font-size: 12px; }
+
+        /* 送信ボタンをもとのサイトのトーンに */
         button { 
-            background: #000; 
+            background: #1a1a1a; 
             color: #fff; 
-            padding: 18px; 
+            padding: 16px; 
             border: none; 
-            border-radius: 6px;
+            border-radius: 30px; /* 角を丸くしてモダンに */
             cursor: pointer; 
             width: 100%; 
-            font-size: 1.1em; 
+            font-size: 16px; 
             font-weight: bold;
-            transition: 0.3s;
-            margin-top: 20px;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        button:hover { background: #333; transform: translateY(-2px); }
-
-        /* 写真アップロード部分の装飾 */
-        input[type="file"] {
-            background: #f1f1f1;
-            padding: 10px;
-            border-radius: 4px;
-            width: 100%;
+        button:hover { 
+            background: #333; 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Fenex Agency<br>AI診断エントリー</h1>
-    <p class="intro">あなたの可能性をAIが診断します。<br>必要事項を入力して送信してください。</p>
+    <h1>Fenex Agency</h1>
+    <p class="intro">AIがあなたの可能性を診断します。<br>上半身と全身の写真を送ってください。</p>
 
     <form action="confirm.php" method="POST" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="name">NAME（ニックネームでも可）</label>
-            <input type="text" id="name" name="name" placeholder="例：ケン" required>
+            <label for="name">NAME（ニックネーム可）</label>
+            <input type="text" id="name" name="name" placeholder="お名前" required>
         </div>
 
         <div class="form-group">
@@ -106,25 +124,30 @@
             <label for="pref">お住まいの都道府県</label>
             <select id="pref" name="pref" required>
                 <option value="">選択してください</option>
-                <option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option>
+                <option value="北海道">北海道</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="大阪府">大阪府</option><option value="福岡県">福岡県</option>
+                <option value="その他">その他</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="area">活動可能範囲</label>
-            <input type="text" id="area" name="area" placeholder="例：首都圏のみ、関西もOKなど">
+            <input type="text" id="area" name="area" placeholder="例：首都圏のみ、全国OKなど">
         </div>
 
         <div class="form-group">
-            <label for="photo_upper">📷 上半身の画像</label>
-            <input type="file" id="photo_upper" name="photo_upper" accept="image/*" required>
-            <p class="note">※10MB以下のjpg/png/gif</p>
+            <label>📷 上半身の画像</label>
+            <div class="file-input-wrapper">
+                <input type="file" id="photo_upper" name="photo_upper" accept="image/*" required>
+                <span class="note">※10MB以下のjpg/png/gif</span>
+            </div>
         </div>
 
         <div class="form-group">
-            <label for="photo_full">🧍 全身写真の画像</label>
-            <input type="file" id="photo_full" name="photo_full" accept="image/*" required>
-            <p class="note">※10MB以下のjpg/png/gif</p>
+            <label>🧍 全身写真の画像</label>
+            <div class="file-input-wrapper">
+                <input type="file" id="photo_full" name="photo_full" accept="image/*" required>
+                <span class="note">※10MB以下のjpg/png/gif</span>
+            </div>
         </div>
 
         <button type="submit">AI診断エントリーを送信する</button>
