@@ -43,7 +43,6 @@
         }
         .input-field:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); transform: translateY(-2px); }
 
-        /* 必須・任意バッジ */
         .badge-required { background: var(--red); color: white; font-size: 10px; padding: 2px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle; font-style: normal; font-weight: 900; }
         .badge-optional { background: #94A3B8; color: white; font-size: 10px; padding: 2px 8px; border-radius: 4px; margin-left: 8px; vertical-align: middle; font-style: normal; font-weight: 900; }
 
@@ -76,14 +75,10 @@
 </head>
 <body class="antialiased">
 
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 px-6 py-4">
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 px-6 py-2">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="flex items-center gap-3">
-                <img src="logo.png" alt="Fenex Agency Logo" class="h-10 w-auto">
-                <div class="flex flex-col text-left">
-                    <span class="text-2xl font-black uppercase leading-none tracking-tighter">Fenex</span>
-                    <span class="text-[10px] tracking-[0.4em] font-bold text-blue-600 uppercase leading-none mt-1">Agency</span>
-                </div>
+            <a href="#" class="flex items-center">
+                <img src="logo.png" alt="Fenex Agency Logo" class="h-24 w-auto object-contain">
             </a>
             <a href="#apply-form" class="bg-[#0F172A] text-white px-8 py-3 rounded-full text-xs font-bold tracking-widest hover:bg-blue-700 transition-all">ENTRY</a>
         </div>
@@ -228,14 +223,10 @@
     <div id="floatBtn" class="float-btn"><a href="#apply-form" class="bg-blue-600 text-white px-10 py-5 rounded-full text-sm font-bold shadow-2xl inline-block hover:scale-105 transition-all">AI無料診断にエントリー</a></div>
 
     <script>
-        // ポップアップ開閉
         function openContactModal() { document.getElementById('contactOverlay').style.display = 'flex'; }
         function closeContactModal() { document.getElementById('contactOverlay').style.display = 'none'; }
-
-        // スクロールで追従ボタン表示
         window.addEventListener('scroll', () => { const btn = document.getElementById('floatBtn'); if (window.scrollY > 500) btn.classList.add('show'); else btn.classList.remove('show'); });
         
-        // メインのエントリーフォーム送信
         const form = document.getElementById('entryForm');
         form.onsubmit = async (e) => {
             e.preventDefault();
@@ -251,7 +242,6 @@
         };
         function resetBtn() { const btn = document.getElementById('submitBtn'); btn.disabled = false; btn.style.opacity = '1'; document.getElementById('btnText').innerHTML = 'AI診断結果を受け取る 🚀'; }
 
-        // お問い合わせフォーム送信
         const cForm = document.getElementById('contactForm');
         cForm.onsubmit = async (e) => {
             e.preventDefault();
